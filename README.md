@@ -1,6 +1,6 @@
 # 📝 React Todo App
 
-A modern Todo web application built with **React**, featuring authentication, protected routes, CRUD operations, optimistic UI updates, and a polished responsive interface with dark mode support.
+A modern Todo web application built with **React** and **Vite**.
 
 ---
 
