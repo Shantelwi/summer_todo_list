@@ -30,13 +30,3 @@ Open:
 ```bash
 http://localhost:5173
 ```
-
----
-
-## 👨‍💻 Author
-
-**Shantel Williams**
-
-Software Developer passionate about building modern, user-friendly web applications with React and JavaScript.
-
-Feel free to connect and explore more of my projects.
