@@ -9,8 +9,8 @@ A modern Todo web application built with **React** and **Vite**.
 ### Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/react-todo-app.git
-cd react-todo-app
+git clone https://github.com/Shantelwi/summer_todo_list
+cd summer_todo_list
 ```
 
 ### Install dependencies
