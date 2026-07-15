@@ -1,7 +1,6 @@
 
-function TodoListItem(todo) {
-    const{title} = todo;
-
+function TodoListItem({todo}) {
+    const {id, title} = todo;
     return (
         <li>
             {todo.title}
