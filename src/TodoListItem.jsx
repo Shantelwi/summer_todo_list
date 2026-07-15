@@ -1,15 +1,12 @@
 
 function TodoListItem() {
-    let todo = {
-        key : {id},
-        baseTitle : {title}
-    }
+    const{id, title} = todo;
+    
     return(
-       <li>
-        {todo.title}
-       </li>
-        
-    )
+        <li>
+            {todo.title}
+        </li>
+    );
 }
 
 export default TodoListItem;
