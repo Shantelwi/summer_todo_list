@@ -8,7 +8,7 @@ function TodoList() {
     return (
 
         <ul>
-            {todoList.map((todo) => {
+            {todos.map((todo) => {
                 return (
                     <li key={todo.id}>{todo.title}</li>
                 )
