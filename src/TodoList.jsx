@@ -1,6 +1,5 @@
-import TodoListItem from "./TodoListItem.jsx";
 
-function TodoList({ todoList }) {
+function TodoList() {
     const todos = [
   { id: 1, title: "review resources" },
   { id: 2, title: "take notes" },
