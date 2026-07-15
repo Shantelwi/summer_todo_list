@@ -1,9 +1,14 @@
 import TodoListItem from "./TodoListItem.jsx";
 
-function TodoList({todoList}) {
+function TodoList({ todoList }) {
     return (
         <ul>
-            {todoList.map(todo => <TodoListItem key={todo.id} prop={todo.title}/>)}
+            {todoList.map((todo) => {
+                return (
+                    <TodoListItem key={todo.id} baseTitle={todo.title}
+                    />
+                )
+                })}
         </ul>
     );
 }

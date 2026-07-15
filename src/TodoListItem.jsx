@@ -1,12 +1,13 @@
-import { useState } from "react";
 
 function TodoListItem() {
-    const [todo, setTodo] = useState();
-    
+    let todo = {
+        key : {id},
+        baseTitle : {title}
+    }
     return(
-       <>
-            {todoList.map(todo => {todo.title})}
-       </>
+       <li>
+        {todo.title}
+       </li>
         
     )
 }
