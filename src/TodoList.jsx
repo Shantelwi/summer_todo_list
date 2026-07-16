@@ -1,4 +1,4 @@
-
+import TodoListItem from "./TodoListItem.jsx"
 
 function TodoList({todoList}) {
 
@@ -7,7 +7,7 @@ function TodoList({todoList}) {
         <ul>
             {todoList.map((todo) => {
                 return (
-                    <li key={todo.id}>{todo.title}</li>
+                    <TodoListItem key={todo.id} todo={todo} />
                 )
                 })}
         </ul>
