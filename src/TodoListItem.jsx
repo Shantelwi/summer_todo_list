@@ -1,10 +1,10 @@
 function TodoListItem({todo}) {
 
-    const{id, title} = todo;
+    const{title} = todo;
 
     return(
         <li>
-            {todo.title};
+            {todo.title}
         </li>
     )
 }
