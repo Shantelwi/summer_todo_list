@@ -16,7 +16,7 @@ function TodoList({ todoList, onCompleteTodo }) {
         //Add Ternary operator that checks if todoList length equals zero
         <>
             {filteredTodoList.length === 0 ?
-                <p>Add Todo above to get started!</p>
+                <p>Add Todo above to get started</p>
                 :
                 <ul>
                     {filteredTodoList.map((todo) => {
