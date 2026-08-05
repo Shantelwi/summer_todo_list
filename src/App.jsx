@@ -3,21 +3,20 @@ import TodoList from "./TodoList.jsx";
 import TodoForm from "./TodoForm.jsx";
 import './App.css'
 
-const todos = [
-  { id: 1, title: "review resources" },
-  { id: 2, title: "take notes" },
-  { id: 3, title: "code out app" }
-]
-
 function App() {
-  const [todoList, setTodoList] = useState(todos);
+  function addTodo(todoTitle) {
+    const newTodo = {id: Date.now(), title: todoTitle};
+    setTodoList(previous => [newTodo, ...previous]);
+  }
+  const [todoList, setTodoList] = useState([]);
   return (
     <div>
       <h1>Todo List</h1>
-      <TodoForm />
+      <TodoForm onAddTodo={addTodo}/>
       <TodoList todoList={todoList} />
     </div>
-  )
+  );
+
 }
 
 export default App
