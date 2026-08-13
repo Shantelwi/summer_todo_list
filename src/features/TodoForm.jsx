@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import {isValidTodoTitle} from '../utils/todoValidation.js'
 import TextInputWithLabel from '../shared/TextInputWithLabel.jsx';
 
 
@@ -25,15 +26,7 @@ function TodoForm({ onAddTodo }) {
                 elementId = 'todoTitle'
                 labelText = 'Todo'
             />
-            {/* <label htmlFor="todoTitle">Todo</label>
-            <input
-                type="text"
-                id="todoTitle"
-                name='todoTitle'
-                placeholder={'Todo Text'}
-                required
-            /> */}
-            <button type="submit" disabled={!workingTodoTitle.trim()} >Add Todo</button> {/* add a disabled prop. set the disabled prop to true when workingTodoTitle is an empty string or contains only whitespace. */}
+            <button type="submit" disabled={!isValidTodoTitle(workingTodoTitle)} >Add Todo</button> {/* add a disabled prop. set the disabled prop to true when workingTodoTitle is an empty string or contains only whitespace. */}
         </form>
     );
 }
