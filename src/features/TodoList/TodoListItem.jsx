@@ -1,8 +1,10 @@
 import TextInputWithLabel from '../../shared/TextInputWithLabel.jsx';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { isValidTodoTitle } from '../../utils/todoValidation.js';
 
-function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
+function TodoListItem({ todo, onCompleteTodo, onUpdateTodo}) {
+
+    const inputRef = useRef();
 
     const [isEditing, setIsEditing] = useState(false);
     const [workingTitle, setWorkingTitle] = useState(todo.title);
@@ -16,7 +18,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
         setWorkingTitle(event.target.value);
     }
 
-    function handleUpdate(event){
+    function handleUpdate(event) {
         if (!isEditing) {
             return;
         }
@@ -26,7 +28,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
             return;
         }
 
-        onUpdateTodo({...todo, title: workingTitle});
+        onUpdateTodo({ ...todo, title: workingTitle });
         setIsEditing(false);
     }
 
@@ -35,7 +37,13 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
             <form onSubmit={handleUpdate}>
                 {isEditing ? (
                     <>
-                        <TextInputWithLabel value={workingTitle} onChange={handleEdit} />
+                        <TextInputWithLabel
+                            value={workingTitle}
+                            onChange={handleEdit}
+                            elementId={`edit${todo.id}`}
+                            labelText='Todo'
+                            ref={inputRef}
+                        />
                         <button type='button' onClick={handleCancel}>Cancel</button>
                         <button type='button' onClick={handleUpdate}>Update</button>
                     </>
