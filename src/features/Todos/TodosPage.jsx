@@ -1,6 +1,6 @@
 import { useState } from "react";
-// import TodoList from "./TodoList";
-// import TodoForm from "./TodoForm";
+import TodoForm from "./TodoForm";
+import TodoList from "./TodoList/TodoList";
 
 function TodosPage() {
     function addTodo(todoTitle) {
@@ -40,7 +40,14 @@ function TodosPage() {
           }
         });
         setTodoList(updatedTodos);
-      }   
+      }
+      
+      return(
+        <>
+          <TodoForm onAddTodo={addTodo}/>
+          <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo}/> { /*add an onCompleteTodo prop to the TodoList component, passing in your completeTodo functioon  */}
+        </>
+      )
 }
 
 export default TodosPage;
