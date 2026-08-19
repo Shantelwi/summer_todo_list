@@ -53,7 +53,44 @@ function TodosPage({token}) {
         title: todoTitle,
         isCompleted: false
       };
+
+      //optimistically add todo
       setTodoList(previous => [newTodo, ...previous]);
+
+      try {
+        const response = await fetch('/api/tasks', {
+          method: 'POST',
+          headers: {
+            'Content-Type' : 'application/json',
+            'X-CSRF-TOKEN' : token
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            title: todoTitle,
+            isCompleted: false
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+        const savedTodo = await response.json();
+
+        //replace temporary todo with the real server todo
+
+        setTodoList(previous =>
+          previous.map(todo =>
+            todo.id === newTodo.id ? savedTodo : todo
+          )
+        );
+
+      } catch (error) {
+        //Remove failed todo
+        setTodoList(previous =>
+          previous.filter(todo => todo.id !== newTodo.id)
+        );
+        setError(`Error: ${error.message}`);
+      }
     }
   
   
