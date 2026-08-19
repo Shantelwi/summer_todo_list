@@ -1,14 +1,15 @@
 import { useState } from "react";
 
-function Logon(onSetEmail, onSetToken) {
+function Logon({onSetEmail, onSetToken}) {
 
 
-    const [email, setEmail] = useJState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [authError, setAuthError] = useState('');
     const [isLoggingOn, setIsLoggingOn] = useState(false);
 
-    async function handleSubmit() {
+    async function handleSubmit(e) {
+        e.preventDefault();
         try {
             const response = await fetch('/api/users/logon', {
                 method: 'POST',
@@ -30,8 +31,26 @@ function Logon(onSetEmail, onSetToken) {
         }
     }
     return(
-        <form onChange={}>
-            <input type="email"  />
+        <form onSubmit={handleSubmit}>
+            <input
+            type="email"
+            id="email"
+            name="email"
+            value = {email}
+            onChange = {(e) => {setEmail(e.target.value)} }
+            required
+            />
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                value = {password}
+                onChange = {(e) => {setPassword(e.target.value)}}
+                required
+            />
+
+            <button type="submit" disabled={isLoggingOn}></button>
         </form>
     )
 }
