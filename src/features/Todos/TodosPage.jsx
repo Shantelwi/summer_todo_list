@@ -1,9 +1,53 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList/TodoList";
 
-function TodosPage() {
-    function addTodo(todoTitle) {
+function TodosPage({token}) {
+  const [todoList, setTodoList] = useState([]);
+
+  //add state variables for error(for displaying API errors, default empty string) and isTodoLoading(for showing loading state, default false)
+  const[error, setError] = useState("");
+  const[isTodoListLoading, setIsTodoListLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchTodos() {
+      try {
+        setIsTodoListLoading (true);
+        const params = new URLSearchParams({
+          limit: 100
+        });
+        const response = await fetch(`/api/tasks?${params}`, {
+          headers: {
+            'X-CSRF-TOKEN' : token
+          },
+          credentials: 'include'
+        });
+
+        if (response.status === 401) {
+          throw new Error("unauthorized");
+        }
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+
+        const data = await response.json();
+
+        setTodoList(data);
+
+      } catch (error) {
+        setError(`Error: ${error.message}`)
+      } finally {
+        setIsTodoListLoading(false);
+      }
+    }
+
+    if (token) {
+      fetchTodos()
+    };
+  }, [token]);
+
+  async function addTodo(todoTitle) {
+    //Transform the existing addTodo function to work with the API
       const newTodo = {
         id: Date.now(),
         title: todoTitle,
@@ -12,7 +56,6 @@ function TodosPage() {
       setTodoList(previous => [newTodo, ...previous]);
     }
   
-    const [todoList, setTodoList] = useState([]);
   
     // completeTodo function: takes id parameter, maps through the todoList array, checks if each todo.id matches the provided id, if matches returns a new object that spreads the current todo and sets isCompleted to true
     function completeTodo(id) {
@@ -44,6 +87,8 @@ function TodosPage() {
       
       return(
         <>
+          {error && <p>{error}</p>}
+          {isTodoListLoading && <p>Loading...</p>}
           <TodoForm onAddTodo={addTodo}/>
           <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo}/> { /*add an onCompleteTodo prop to the TodoList component, passing in your completeTodo functioon  */}
         </>
