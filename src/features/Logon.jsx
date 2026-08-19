@@ -10,6 +10,9 @@ function Logon({onSetEmail, onSetToken}) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+
+        setIsLoggingOn(true);
+
         try {
             const response = await fetch('/api/users/logon', {
                 method: 'POST',
@@ -32,25 +35,34 @@ function Logon({onSetEmail, onSetToken}) {
     }
     return(
         <form onSubmit={handleSubmit}>
-            <input
-            type="email"
-            id="email"
-            name="email"
-            value = {email}
-            onChange = {(e) => {setEmail(e.target.value)} }
-            required
-            />
 
-            <input
-                type="password"
-                id="password"
-                name="password"
-                value = {password}
-                onChange = {(e) => {setPassword(e.target.value)}}
+            {authError && authError}
+
+            <label htmlFor="email">
+                Email
+                <input
+                type="email"
+                id="email"
+                name="email"
+                value = {email}
+                onChange = {(e) => {setEmail(e.target.value)} }
                 required
-            />
+                />
+            </label>
 
-            <button type="submit" disabled={isLoggingOn}></button>
+            <label htmlFor="password">
+                Password
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value = {password}
+                    onChange = {(e) => {setPassword(e.target.value)}}
+                    required
+                />
+            </label>
+
+            <button type="submit" disabled={isLoggingOn}>{isLoggingOn === true ? "Logging in..." : "Log On" }</button>
         </form>
     )
 }
