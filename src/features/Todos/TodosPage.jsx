@@ -47,6 +47,7 @@ function TodosPage({ token }) {
   }, [token]);
 
   async function addTodo(todoTitle) {
+    setError("");
     //Transform the existing addTodo function to work with the API
     const newTodo = {
       id: Date.now(),
@@ -96,8 +97,14 @@ function TodosPage({ token }) {
 
   // completeTodo function: takes id parameter, maps through the todoList array, checks if each todo.id matches the provided id, if matches returns a new object that spreads the current todo and sets isCompleted to true
   async function completeTodo(id) {
+    setError("");
     //Store the original todo for rollback
     const originalTodo = todoList.find(todo => todo.id === id);
+
+    if (!originalTodo) {
+      setError("Todo not found");
+      return;
+    }
 
     //Optimistically update the todo
     setTodoList(previous =>
@@ -137,9 +144,14 @@ function TodosPage({ token }) {
 
   //create an updateTodo function that: takes an editedTodo argument and maps through todos, comparing each todo.id with the updated todo's id.
   async function updateTodo(editedTodo) {
-
+    setError("");
         //Store the original todo for rollback
     const originalTodo = todoList.find(todo => todo.id === editedTodo.id);
+
+    if (!originalTodo) {
+      setError("Todo not found");
+      return;
+    }
 
     //Optimistically update the todo
     setTodoList(previous =>
