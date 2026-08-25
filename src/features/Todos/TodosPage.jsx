@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList/TodoList";
 import SortBy from "../../shared/SortBy";
@@ -21,11 +21,15 @@ function TodosPage({ token }) {
   const [filterTerm, setFilterTerm] = useState('');
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
-  //Add cache invalidation state
-  const [invalidateCache, setInvalidateCache] = useState(0);
-
-  //create cache invalidation function
+  //add a new state variable called dataVersionwith an initial value of 0
+  const [dataVersion, setDataVersion] = useState(0);
   
+  //Add cache invalidation state
+  //create cache invalidation function
+  const invalidateCache = useCallback(() => {
+    setDataVersion(prev => prev + 1);
+    console.log("Invalidating memo cache after todo mutation");
+  }, [])
 
   //Create filter handler function that accepts new filter term and calls setFilterTerm
   const handleFilterChange = (newTerm) => {
@@ -108,16 +112,19 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error("Something went wrong");
       }
+      
       const savedTodo = await response.json();
-
+      
       //replace temporary todo with the real server todo
-
+      
       setTodoList(previous =>
         previous.map(todo =>
           todo.id === newTodo.id ? savedTodo : todo
         )
       );
 
+      invalidateCache();
+      
     } catch (error) {
       //Remove failed todo
       setTodoList(previous =>
@@ -126,7 +133,6 @@ function TodosPage({ token }) {
       setError(`Error: ${error.message}`);
     }
   }
-
 
   // completeTodo function: takes id parameter, maps through the todoList array, checks if each todo.id matches the provided id, if matches returns a new object that spreads the current todo and sets isCompleted to true
   async function completeTodo(id) {
@@ -164,10 +170,12 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error("Something went wrong");
       }
+      invalidateCache();
+
     } catch (error) {
       //Rollback to the original todo
       setTodoList(previous =>
-        previous.map(todo => 
+        previous.map(todo =>
           todo.id === id ? originalTodo : todo
         )
       );
@@ -178,7 +186,7 @@ function TodosPage({ token }) {
   //create an updateTodo function that: takes an editedTodo argument and maps through todos, comparing each todo.id with the updated todo's id.
   async function updateTodo(editedTodo) {
     setError("");
-        //Store the original todo for rollback
+    //Store the original todo for rollback
     const originalTodo = todoList.find(todo => todo.id === editedTodo.id);
 
     if (!originalTodo) {
@@ -212,10 +220,13 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error("Something went wrong");
       }
+
+      invalidateCache();
+
     } catch (error) {
       //Rollback to the original todo
       setTodoList(previous =>
-        previous.map(todo => 
+        previous.map(todo =>
           todo.id === editedTodo.id ? originalTodo : todo
         )
       );
@@ -225,12 +236,12 @@ function TodosPage({ token }) {
 
   return (
     <>
-        {error && (
-          <div>
-            <p>{error}</p>
-            <button onClick={() => setError("")}>Clear Error</button>  
-          </div>
-        )
+      {error && (
+        <div>
+          <p>{error}</p>
+          <button onClick={() => setError("")}>Clear Error</button>
+        </div>
+      )
       }
       {isTodoListLoading && <p>Loading...</p>}
       <SortBy
@@ -244,9 +255,12 @@ function TodosPage({ token }) {
         onFilterChange={handleFilterChange}
       />
       <TodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} /> { /*add an onCompleteTodo prop to the TodoList component, passing in your completeTodo functioon  */}
+      <TodoList 
+        todoList={todoList} 
+        onCompleteTodo={completeTodo} 
+        onUpdateTodo={updateTodo} 
+        dataVersion={dataVersion}/> { /*add an onCompleteTodo prop to the TodoList component, passing in your completeTodo functioon  */}
     </>
   )
 }
-
 export default TodosPage;
