@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList/TodoList";
+import SortBy from "../../shared/SortBy";
 
 function TodosPage({ token }) {
+
+  //add two new state variables after the existing state: sortBy with initial value of 'createdAt' and sortDirection with the initial value of 'desc'
+  const [sortBy, setSortBy] = useState('createdAt');
+  const [sortDirection, setSortDirection] = useState('desc');
+
+
   const [todoList, setTodoList] = useState([]);
 
   //add state variables for error(for displaying API errors, default empty string) and isTodoLoading(for showing loading state, default false)
@@ -14,6 +21,8 @@ function TodosPage({ token }) {
       try {
         setIsTodoListLoading(true);
         const params = new URLSearchParams({
+          sortBy,
+          sortDirection,
           limit: 100
         });
         const response = await fetch(`/api/tasks?${params}`, {
@@ -44,7 +53,7 @@ function TodosPage({ token }) {
     if (token) {
       fetchTodos()
     };
-  }, [token]);
+  }, [token, sortBy, sortDirection]);
 
   async function addTodo(todoTitle) {
     setError("");
@@ -200,6 +209,12 @@ function TodosPage({ token }) {
         )
       }
       {isTodoListLoading && <p>Loading...</p>}
+      <SortBy
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        onSortByChange={setSortBy}
+        onSortDirectionChange={setSortDirection}
+      />
       <TodoForm onAddTodo={addTodo} />
       <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} /> { /*add an onCompleteTodo prop to the TodoList component, passing in your completeTodo functioon  */}
     </>
