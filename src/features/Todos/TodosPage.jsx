@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList/TodoList";
 import SortBy from "../../shared/SortBy";
+import FilterInput from "../../shared/FilterInput";
+import useDebounce from "../../utils/useDebounce";
 
 function TodosPage({ token }) {
 
@@ -9,22 +11,38 @@ function TodosPage({ token }) {
   const [sortBy, setSortBy] = useState('createdAt');
   const [sortDirection, setSortDirection] = useState('desc');
 
-
   const [todoList, setTodoList] = useState([]);
 
   //add state variables for error(for displaying API errors, default empty string) and isTodoLoading(for showing loading state, default false)
   const [error, setError] = useState("");
   const [isTodoListLoading, setIsTodoListLoading] = useState(false);
 
+  //Add filter state after existing state in TodosPage.jsx
+  const [filterTerm, setFilterTerm] = useState('');
+  const debouncedFilterTerm = useDebounce(filterTerm, 300);
+
+  //Create filter handler function that accepts new filter term and calls setFilterTerm
+  const handleFilterChange = (newTerm) => {
+    setFilterTerm(newTerm);
+  };
+
   useEffect(() => {
+    //update fetchTodos function to include filter when present
     async function fetchTodos() {
       try {
         setIsTodoListLoading(true);
-        const params = new URLSearchParams({
+
+        const paramsObject = {
           sortBy,
           sortDirection,
           limit: 100
-        });
+        };
+        if (debouncedFilterTerm) {
+          paramsObject.find = debouncedFilterTerm;
+        }
+
+        const params = new URLSearchParams(paramsObject);
+
         const response = await fetch(`/api/tasks?${params}`, {
           headers: {
             'X-CSRF-TOKEN': token
@@ -53,7 +71,7 @@ function TodosPage({ token }) {
     if (token) {
       fetchTodos()
     };
-  }, [token, sortBy, sortDirection]);
+  }, [token, sortBy, sortDirection, debouncedFilterTerm]);
 
   async function addTodo(todoTitle) {
     setError("");
@@ -214,6 +232,10 @@ function TodosPage({ token }) {
         sortDirection={sortDirection}
         onSortByChange={setSortBy}
         onSortDirectionChange={setSortDirection}
+      />
+      <FilterInput
+        filterTerm={filterTerm}
+        onFilterChange={handleFilterChange}
       />
       <TodoForm onAddTodo={addTodo} />
       <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} /> { /*add an onCompleteTodo prop to the TodoList component, passing in your completeTodo functioon  */}
