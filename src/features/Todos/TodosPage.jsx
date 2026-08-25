@@ -21,6 +21,12 @@ function TodosPage({ token }) {
   const [filterTerm, setFilterTerm] = useState('');
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
+  //Add cache invalidation state
+  const [invalidateCache, setInvalidateCache] = useState(0);
+
+  //create cache invalidation function
+  
+
   //Create filter handler function that accepts new filter term and calls setFilterTerm
   const handleFilterChange = (newTerm) => {
     setFilterTerm(newTerm);
