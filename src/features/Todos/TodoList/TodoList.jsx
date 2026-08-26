@@ -7,10 +7,10 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo,dataVersion }) {
 
     //create a filteredTodoList constant that filters out todos where isCompleted is true. Replace all reference to todoList in the jsx with filteredTodoList. Now when users check a todo's checkbox, it will disappear from the list as it's marked complete.
     const filteredTodoList = useMemo(() => {
-        console.log(`"Recalculating filtered todos (v${dataVersion})"`)
-
-        return {version:dataVersion, todos:todoList.filter((todo) => !todo.isCompleted)};
-    }, [todoList, dataVersion])
+        return {
+            version:dataVersion, 
+            todos:todoList.filter((todo) => !todo.isCompleted)};
+        }, [todoList, dataVersion])
 
     return (
         //Add Ternary operator that checks if todoList length equals zero

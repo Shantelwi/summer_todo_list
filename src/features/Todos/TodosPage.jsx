@@ -31,7 +31,6 @@ function TodosPage({ token }) {
   //create cache invalidation function
   const invalidateCache = useCallback(() => {
     setDataVersion(prev => prev + 1);
-    console.log("Invalidating memo cache after todo mutation");
   }, [])
 
   //Create filter handler function that accepts new filter term and calls setFilterTerm
@@ -73,12 +72,15 @@ function TodosPage({ token }) {
         const data = await response.json();
 
         setTodoList(data.tasks);
+        setError('');
         setFilterError('');
 
       } catch (error) {
         if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'desc') {
+          setError('');
           setFilterError(`Error filtering/sorting todos: ${error.message}`);
         } else {
+          setFilterError('');
           setError(`Error fetching todos: ${error.message}`);
         }
       } finally {
