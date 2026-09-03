@@ -9,8 +9,8 @@ export const TODO_ACTIONS = {
     ADD_TODO_SUCCESS: 'ADD_TODO_SUCCESS',
     ADD_TODO_ERROR: 'ADD_TODO_ERROR',
 
-    COMPLETE_TODO: 'COMPLETE_TODO_',
-    UPDATE_TODO: 'UPDATE_TODO_',
+    COMPLETE_TODO: 'COMPLETE_TODO',
+    UPDATE_TODO: 'UPDATE_TODO',
 
     //UI operations
     SET_SORT: 'SET_SORT',
@@ -27,7 +27,7 @@ export const initialTodoState = {
     isTodoListLoading: true,
     sortBy: 'createdAt',
     sortDirection: 'asc',
-    fitlerTerm: '',
+    filterTerm: '',
     dataVersion: 0
 };
 
@@ -40,7 +40,7 @@ export function todoReducer(state, action) {
                 ...state,
                 isTodoListLoading: true,
                 error: '',
-                filterError:''
+                filterError: ''
             };
 
         case TODO_ACTIONS.FETCH_SUCCESS:
@@ -51,7 +51,7 @@ export function todoReducer(state, action) {
                 error: '',
                 filterError: ''
             };
-            
+
         case TODO_ACTIONS.FETCH_ERROR:
             return {
                 ...state,
@@ -63,18 +63,73 @@ export function todoReducer(state, action) {
         case TODO_ACTIONS.ADD_TODO_START:
             return {
                 ...state,
-                todoList: [action.newTodo ,...state.todoList],
+                todoList: [action.newTodo, ...state.todoList],
                 error: ''
             }
 
         case TODO_ACTIONS.ADD_TODO_SUCCESS:
             return {
                 ...state,
-                todoList: action.savedTodo,
+                todoList: state.todoList.map(todo => todo.id === action.newTodo.id ? action.savedTodo : todo),
                 error: ''
+            }
+
+        case TODO_ACTIONS.ADD_TODO_ERROR:
+            return {
+                ...state,
+                todoList: state.todoList.filter(todo => todo.id !== action.newTodo.id),
+                error: `Error: ${action.message}`
+            }
+
+        case TODO_ACTIONS.COMPLETE_TODO:
+            return {
+                ...state,
+                todoList: state.todoList.map(
+                    todo => todo.id === action.id 
+                    ? {...todo, isCompleted:true} 
+                    : todo),
+                error: '',
+            }
+
+        case TODO_ACTIONS.UPDATE_TODO:
+            return {
+                ...state,
+                todoList: state.todoList.map(
+                    todo => todo.id === action.editedTodo.id 
+                    ? { ...todo, ...action.editedTodo}
+                    : todo),
+                error: ''
+            }
+
+        case TODO_ACTIONS.SET_SORT:
+            return {
+                ...state,
+                sortBy: action.sortBy,
+                sortDirection: action.sortDirection
+            }
+
+        case TODO_ACTIONS.SET_FILTER:
+            return {
+                ...state,
+                filterTerm: action.filterTerm
+            }
+
+        case TODO_ACTIONS.CLEAR_ERROR:
+            return {
+                ...state,
+                filterError: ''
+            }
+
+        case TODO_ACTIONS.RESET_FILTERS:
+            return {
+                ...state,
+                filterTerm: '',
+                sortBy: 'createdAt',
+                sortDirection: 'asc',
+                filterError: ''
             }
     
         default:
-            throw new Error(`Unknown action type: ${action.type}`);
+            throw new Error(`Unknown action type: ${ action.type } `);
     }
 }
