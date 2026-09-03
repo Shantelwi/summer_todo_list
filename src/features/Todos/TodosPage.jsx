@@ -1,31 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useReducer } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList/TodoList";
 import SortBy from "../../shared/SortBy";
 import FilterInput from "../../shared/FilterInput";
 import useDebounce from "../../utils/useDebounce";
+import {todoReducer, initialTodoState, TODO_ACTIONS} from '../../reducers/todoReducer';
 
 function TodosPage({ token }) {
 
-  const [todoList, setTodoList] = useState([]);
-
-  //add two new state variables after the existing state: sortBy with initial value of 'createdAt' and sortDirection with the initial value of 'desc'
-  const [sortBy, setSortBy] = useState('createdAt');
-  const [sortDirection, setSortDirection] = useState('asc');
-
-  //add state variables for error(for displaying API errors, default empty string) and isTodoLoading(for showing loading state, default false)
-  const [error, setError] = useState("");
-  const [isTodoListLoading, setIsTodoListLoading] = useState(true);
-
-  //Add filter state after existing state in TodosPage.jsx
-  const [filterTerm, setFilterTerm] = useState('');
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
+  
+  //replace all useState calls with useReducer and destructuring useReducer's state
+  const [state, dispatch] = useReducer(todoReducer, initialTodoState);
 
-  //add a new state variable called dataVersion with an initial value of 0
-  const [dataVersion, setDataVersion] = useState(0);
-
-  //add filter error state to TodosPage.jsx
-  const [filterError, setFilterError] = useState('');
+  const {
+    todoList,
+    error,
+    filterError,
+    isTodoListLoading,
+    sortBy,
+    sortDirection,
+    filterTerm,
+    dataVersion
+  } = state;
 
   //Add cache invalidation state
   //create cache invalidation function
@@ -42,7 +39,7 @@ function TodosPage({ token }) {
     //update fetchTodos function to include filter when present
     async function fetchTodos() {
       try {
-        setIsTodoListLoading(true);
+        dispatch({ type: TODO_ACTIONS.FETCH_START });
 
         const paramsObject = {
           sortBy,
@@ -71,20 +68,28 @@ function TodosPage({ token }) {
 
         const data = await response.json();
 
-        setTodoList(data.tasks);
-        setError('');
-        setFilterError('');
+        dispatch({
+          type: TODO_ACTIONS.FETCH_SUCCESS,
+          payload: {data}
+        });
 
       } catch (error) {
         if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'asc') {
-          setError('');
-          setFilterError(`Error filtering/sorting todos: ${error.message}`);
+          dispatch({
+            type: TODO_ACTIONS.FETCH_ERROR,
+            payload:{
+              message: `Error filtering/sorting todos: ${error.message}`
+            }
+          });
         } else {
-          setFilterError('');
-          setError(`Error fetching todos: ${error.message}`);
+          dispatch ({
+            type: TODO_ACTIONS.FETCH_ERROR,
+            payload: {
+              message:`Error fetching todos: ${error.message}`,
+              isFilterError: false 
+            }
+          })
         }
-      } finally {
-        setIsTodoListLoading(false);
       }
     }
 
