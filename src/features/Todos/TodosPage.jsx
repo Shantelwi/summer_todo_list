@@ -7,21 +7,21 @@ import useDebounce from "../../utils/useDebounce";
 
 function TodosPage({ token }) {
 
+  const [todoList, setTodoList] = useState([]);
+
   //add two new state variables after the existing state: sortBy with initial value of 'createdAt' and sortDirection with the initial value of 'desc'
   const [sortBy, setSortBy] = useState('createdAt');
-  const [sortDirection, setSortDirection] = useState('desc');
-
-  const [todoList, setTodoList] = useState([]);
+  const [sortDirection, setSortDirection] = useState('asc');
 
   //add state variables for error(for displaying API errors, default empty string) and isTodoLoading(for showing loading state, default false)
   const [error, setError] = useState("");
-  const [isTodoListLoading, setIsTodoListLoading] = useState(false);
+  const [isTodoListLoading, setIsTodoListLoading] = useState(true);
 
   //Add filter state after existing state in TodosPage.jsx
   const [filterTerm, setFilterTerm] = useState('');
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
-  //add a new state variable called dataVersionwith an initial value of 0
+  //add a new state variable called dataVersion with an initial value of 0
   const [dataVersion, setDataVersion] = useState(0);
 
   //add filter error state to TodosPage.jsx
@@ -76,7 +76,7 @@ function TodosPage({ token }) {
         setFilterError('');
 
       } catch (error) {
-        if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'desc') {
+        if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'asc') {
           setError('');
           setFilterError(`Error filtering/sorting todos: ${error.message}`);
         } else {
@@ -262,7 +262,7 @@ function TodosPage({ token }) {
           <button onClick={() => {
             setFilterTerm('');
             setSortBy('createdAt')
-            setSortDirection('desc')
+            setSortDirection('asc')
             setFilterError('')
           }}>
             Reset Filters
