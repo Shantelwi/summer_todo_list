@@ -9,8 +9,13 @@ export const TODO_ACTIONS = {
     ADD_TODO_SUCCESS: 'ADD_TODO_SUCCESS',
     ADD_TODO_ERROR: 'ADD_TODO_ERROR',
 
-    COMPLETE_TODO: 'COMPLETE_TODO',
-    UPDATE_TODO: 'UPDATE_TODO',
+    COMPLETE_TODO_START: 'COMPLETE_TODO_START',
+    COMPLETE_TODO_SUCCESS: 'COMPLETE_TODO_SUCCESS',
+    COMPLETE_TODO_ERROR: 'COMPLETE_TODO_ERROR',
+
+    UPDATE_TODO_START: 'UPDATE_TODO_START',
+    UPDATE_TODO_SUCCESS: 'UPDATE_TODO_SUCCESS',
+    UPDATE_TODO_ERROR: 'UPDATE_TODO_ERROR',
 
     //UI operations
     SET_SORT: 'SET_SORT',
@@ -47,7 +52,7 @@ export function todoReducer(state, action) {
             return {
                 ...state,
                 isTodoListLoading: false,
-                todoList: action.tasks,
+                todoList: action.payload.data,
                 error: '',
                 filterError: ''
             };
@@ -56,42 +61,62 @@ export function todoReducer(state, action) {
             return {
                 ...state,
                 isTodoListLoading: false,
-                error: `Error fetching todos: ${action.message}`,
-                filterError: ''
+                error: action.payload.isFilterError ? '' : action.payload.message ,
+                filterError: action.payload.isFilterError ? action.payload.message : ''
             }
 
         case TODO_ACTIONS.ADD_TODO_START:
             return {
                 ...state,
-                todoList: [action.newTodo, ...state.todoList],
+                todoList: [action.payload.newTodo, ...state.todoList],
                 error: ''
             }
-
+        
         case TODO_ACTIONS.ADD_TODO_SUCCESS:
             return {
                 ...state,
-                todoList: state.todoList.map(todo => todo.id === action.newTodo.id ? action.savedTodo : todo),
-                error: ''
+                todoList: state.todoList.map(
+                    todo => todo.id === action.payload.newTodo.id 
+                    ? action.payload.savedTodo 
+                    : todo),
+                dataVersion: state.dataVersion + 1
             }
+         
 
         case TODO_ACTIONS.ADD_TODO_ERROR:
             return {
                 ...state,
-                todoList: state.todoList.filter(todo => todo.id !== action.newTodo.id),
-                error: `Error: ${action.message}`
+                todoList: state.todoList.filter(todo => todo.id !== action.payload.newTodo.id),
+                error: `Error: ${action.payload.error}`
             }
 
-        case TODO_ACTIONS.COMPLETE_TODO:
+        case TODO_ACTIONS.COMPLETE_TODO_START:
             return {
                 ...state,
                 todoList: state.todoList.map(
-                    todo => todo.id === action.id 
+                    todo => todo.id === action.payload.id 
                     ? {...todo, isCompleted:true} 
                     : todo),
                 error: '',
             }
 
-        case TODO_ACTIONS.UPDATE_TODO:
+        case TODO_ACTIONS.COMPLETE_TODO_SUCCESS:
+            return {
+                ...state,
+                dataVersion: state.dataVersion + 1
+            }
+
+        case TODO_ACTIONS.COMPLETE_TODO_ERROR:
+            return {
+                ...state,
+                todoList: state.todoList.map(todo =>
+                    todo.id === action.payload.id
+                    ? action.payload.originalTodo
+                    : todo),
+                error: `Error: ${action.payload.error}`
+            }
+
+        case TODO_ACTIONS.UPDATE_TODO_START:
             return {
                 ...state,
                 todoList: state.todoList.map(

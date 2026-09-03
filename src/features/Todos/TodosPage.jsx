@@ -78,15 +78,16 @@ function TodosPage({ token }) {
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
             payload:{
-              message: `Error filtering/sorting todos: ${error.message}`
-            }
-          });
+              isFilterError: true,
+              message: `Error filtering/sorting todos: ${error.message}`,
+            } 
+          })
         } else {
           dispatch ({
             type: TODO_ACTIONS.FETCH_ERROR,
-            payload: {
+            payload:{
+              isFilterError: false,
               message:`Error fetching todos: ${error.message}`,
-              isFilterError: false 
             }
           })
         }
@@ -99,7 +100,6 @@ function TodosPage({ token }) {
   }, [token, sortBy, sortDirection, debouncedFilterTerm]);
 
   async function addTodo(todoTitle) {
-    setError("");
     //Transform the existing addTodo function to work with the API
     const newTodo = {
       id: Date.now(),
@@ -108,7 +108,13 @@ function TodosPage({ token }) {
     };
 
     //optimistically add todo
-    setTodoList(previous => [newTodo, ...previous]);
+    dispatch({
+      type: TODO_ACTIONS.ADD_TODO_START,
+      payload: {
+        newTodo: newTodo
+      }
+
+    })
 
     try {
       const response = await fetch('/api/tasks', {
@@ -132,42 +138,38 @@ function TodosPage({ token }) {
 
       //replace temporary todo with the real server todo
 
-      setTodoList(previous =>
-        previous.map(todo =>
-          todo.id === newTodo.id ? savedTodo : todo
-        )
-      );
-
-      invalidateCache();
+      dispatch({
+        type: TODO_ACTIONS.ADD_TODO_SUCCESS,
+        payload: {
+          savedTodo: savedTodo,
+          newTodo: newTodo
+        }
+      })
 
     } catch (error) {
       //Remove failed todo
-      setTodoList(previous =>
-        previous.filter(todo => todo.id !== newTodo.id)
-      );
-      setError(`Error: ${error.message}`);
+      dispatch({
+        type: TODO_ACTIONS.ADD_TODO_ERROR,
+        payload: {
+          newTodo: newTodo,
+          error: error.message
+        }
+      })
     }
   }
 
   // completeTodo function: takes id parameter, maps through the todoList array, checks if each todo.id matches the provided id, if matches returns a new object that spreads the current todo and sets isCompleted to true
   async function completeTodo(id) {
-    setError("");
     //Store the original todo for rollback
     const originalTodo = todoList.find(todo => todo.id === id);
 
-    if (!originalTodo) {
-      setError("Todo not found");
-      return;
-    }
-
     //Optimistically update the todo
-    setTodoList(previous =>
-      previous.map(todo =>
-        todo.id === id
-          ? { ...todo, isCompleted: true }
-          : todo
-      )
-    );
+    dispatch({
+      type: TODO_ACTIONS.COMPLETE_TODO_START,
+      payload: {
+        id: id, 
+      }
+    });
 
     try {
       const response = await fetch(`/api/tasks/${id}`, {
@@ -185,16 +187,21 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error("Something went wrong");
       }
-      invalidateCache();
 
+      dispatch({
+        type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS
+      })
+      
     } catch (error) {
       //Rollback to the original todo
-      setTodoList(previous =>
-        previous.map(todo =>
-          todo.id === id ? originalTodo : todo
-        )
-      );
-      setError(`Error: ${error.message}`);
+      dispatch({
+        type: TODO_ACTIONS.COMPLETE_TODO_ERROR,
+        payload: {
+          id: id,
+          originalTodo: originalTodo,
+          error: error.message
+        }
+      })
     }
   }
 
