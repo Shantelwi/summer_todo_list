@@ -1,18 +1,17 @@
-import { useCallback, useEffect, useState, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList/TodoList";
 import SortBy from "../../shared/SortBy";
 import FilterInput from "../../shared/FilterInput";
 import useDebounce from "../../utils/useDebounce";
-import {todoReducer, initialTodoState, TODO_ACTIONS} from '../../reducers/todoReducer';
+import { todoReducer, initialTodoState, TODO_ACTIONS } from '../../reducers/todoReducer';
 
 function TodosPage({ token }) {
 
-  const debouncedFilterTerm = useDebounce(filterTerm, 300);
   
   //replace all useState calls with useReducer and destructuring useReducer's state
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
-
+  
   const {
     todoList,
     error,
@@ -23,18 +22,18 @@ function TodosPage({ token }) {
     filterTerm,
     dataVersion
   } = state;
-
-  //Add cache invalidation state
-  //create cache invalidation function
-  const invalidateCache = useCallback(() => {
-    setDataVersion(prev => prev + 1);
-  }, [])
-
-  //Create filter handler function that accepts new filter term and calls setFilterTerm
+  
+  const debouncedFilterTerm = useDebounce(filterTerm, 300);
+  
   const handleFilterChange = (newTerm) => {
-    setFilterTerm(newTerm);
+    dispatch({
+      type: TODO_ACTIONS.SET_FILTER,
+      payload: {
+        filterTerm: newTerm
+      }
+    })
   };
-
+  
   useEffect(() => {
     //update fetchTodos function to include filter when present
     async function fetchTodos() {
@@ -70,24 +69,24 @@ function TodosPage({ token }) {
 
         dispatch({
           type: TODO_ACTIONS.FETCH_SUCCESS,
-          payload: {data}
+          payload: { data }
         });
 
       } catch (error) {
         if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'asc') {
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
-            payload:{
+            payload: {
               isFilterError: true,
               message: `Error filtering/sorting todos: ${error.message}`,
-            } 
+            }
           })
         } else {
-          dispatch ({
+          dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
-            payload:{
+            payload: {
               isFilterError: false,
-              message:`Error fetching todos: ${error.message}`,
+              message: `Error fetching todos: ${error.message}`,
             }
           })
         }
@@ -167,7 +166,7 @@ function TodosPage({ token }) {
     dispatch({
       type: TODO_ACTIONS.COMPLETE_TODO_START,
       payload: {
-        id: id, 
+        id: id,
       }
     });
 
@@ -191,7 +190,7 @@ function TodosPage({ token }) {
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS
       })
-      
+
     } catch (error) {
       //Rollback to the original todo
       dispatch({
@@ -207,23 +206,18 @@ function TodosPage({ token }) {
 
   //create an updateTodo function that: takes an editedTodo argument and maps through todos, comparing each todo.id with the updated todo's id.
   async function updateTodo(editedTodo) {
-    setError("");
     //Store the original todo for rollback
     const originalTodo = todoList.find(todo => todo.id === editedTodo.id);
 
-    if (!originalTodo) {
-      setError("Todo not found");
-      return;
-    }
-
     //Optimistically update the todo
-    setTodoList(previous =>
-      previous.map(todo =>
-        todo.id === editedTodo.id
-          ? { ...todo, ...editedTodo }
-          : todo
-      )
-    );
+    dispatch({
+      type: TODO_ACTIONS.UPDATE_TODO_START,
+      payload: {
+        editedTodo: editedTodo,
+        originalTodo: originalTodo,
+
+      }
+    })
 
     try {
       const response = await fetch(`/api/tasks/${editedTodo.id}`, {
@@ -243,16 +237,20 @@ function TodosPage({ token }) {
         throw new Error("Something went wrong");
       }
 
-      invalidateCache();
+      dispatch({
+        type: TODO_ACTIONS.UPDATE_TODO_SUCCESS
+      })
 
     } catch (error) {
       //Rollback to the original todo
-      setTodoList(previous =>
-        previous.map(todo =>
-          todo.id === editedTodo.id ? originalTodo : todo
-        )
-      );
-      setError(`Error: ${error.message}`);
+      dispatch({
+        type: TODO_ACTIONS.UPDATE_TODO_ERROR,
+        payload: {
+          editedTodo: editedTodo,
+          originalTodo: originalTodo,
+          error: error.message
+        }
+      })
     }
   }
 
@@ -261,21 +259,25 @@ function TodosPage({ token }) {
       {error && (
         <div>
           <p>{error}</p>
-          <button onClick={() => setError("")}>Clear Error</button>
+          <button onClick={() => dispatch({
+            type: TODO_ACTIONS.CLEAR_ERROR
+          })}
+          >Clear Error</button>
         </div>
       )}
-      
+
       {filterError && (
         <div>
           <p>{filterError}</p>
-          <button onClick={() => setFilterError('')}>
+          <button onClick={() => dispatch({
+            type: TODO_ACTIONS.CLEAR_FILTER_ERROR
+          })}>
             Clear Filter Error
           </button>
           <button onClick={() => {
-            setFilterTerm('');
-            setSortBy('createdAt')
-            setSortDirection('asc')
-            setFilterError('')
+            dispatch({
+              type: TODO_ACTIONS.RESET_FILTERS
+            })
           }}>
             Reset Filters
           </button>
@@ -286,8 +288,22 @@ function TodosPage({ token }) {
       <SortBy
         sortBy={sortBy}
         sortDirection={sortDirection}
-        onSortByChange={setSortBy}
-        onSortDirectionChange={setSortDirection}
+        onSortByChange={(newSortBy) => {
+          dispatch({
+            type: TODO_ACTIONS.SET_SORT,
+            payload: {
+              sortBy: newSortBy
+            }
+          })
+        }}
+        onSortDirectionChange={(newSortDirection) => {
+          dispatch({
+            type: TODO_ACTIONS.SET_SORT,
+            payload: {
+              sortDirection: newSortDirection
+            }
+          })
+        }}
       />
       <FilterInput
         filterTerm={filterTerm}

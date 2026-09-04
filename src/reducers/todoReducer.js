@@ -21,6 +21,7 @@ export const TODO_ACTIONS = {
     SET_SORT: 'SET_SORT',
     SET_FILTER: 'SET_FILTER',
     CLEAR_ERROR: 'CLEAR_ERROR',
+    CLEAR_FILTER_ERROR: 'CLEAR_FILTER_ERROR',
     RESET_FILTERS: 'RESET_FILTERS'
 }
 
@@ -120,26 +121,49 @@ export function todoReducer(state, action) {
             return {
                 ...state,
                 todoList: state.todoList.map(
-                    todo => todo.id === action.editedTodo.id 
-                    ? { ...todo, ...action.editedTodo}
+                    todo => todo.id === action.payload.editedTodo.id 
+                    ? { ...todo, ...action.payload.editedTodo}
                     : todo),
                 error: ''
+            } 
+
+        case TODO_ACTIONS.UPDATE_TODO_SUCCESS:
+            return {
+                ...state,
+                dataVersion: state.dataVersion + 1
+            }
+
+        case TODO_ACTIONS.UPDATE_TODO_ERROR:
+            return {
+                ...state,
+                todoList: state.todoList.map( todo =>
+                    todo.id === action.payload.editedTodo.id
+                    ? action.payload.originalTodo
+                    : todo
+                ),
+                error: `Error: ${action.payload.error}`
             }
 
         case TODO_ACTIONS.SET_SORT:
             return {
                 ...state,
-                sortBy: action.sortBy,
-                sortDirection: action.sortDirection
+                sortBy: action.payload.sortBy ?? state.sortBy,
+                sortDirection: action.payload.sortDirection ?? state.sortDirection
             }
 
         case TODO_ACTIONS.SET_FILTER:
             return {
                 ...state,
-                filterTerm: action.filterTerm
+                filterTerm: action.payload.filterTerm
             }
 
         case TODO_ACTIONS.CLEAR_ERROR:
+            return {
+                ...state,
+                error: ''
+            }
+
+        case TODO_ACTIONS.CLEAR_FILTER_ERROR:
             return {
                 ...state,
                 filterError: ''
