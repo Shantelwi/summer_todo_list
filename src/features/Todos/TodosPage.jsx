@@ -5,9 +5,10 @@ import SortBy from "../../shared/SortBy";
 import FilterInput from "../../shared/FilterInput";
 import useDebounce from "../../utils/useDebounce";
 import { todoReducer, initialTodoState, TODO_ACTIONS } from '../../reducers/todoReducer';
+import { useAuth } from "../../contexts/AuthContext";
 
-function TodosPage({ token }) {
-
+function TodosPage() {
+  const { token } = useAuth();
   
   //replace all useState calls with useReducer and destructuring useReducer's state
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
