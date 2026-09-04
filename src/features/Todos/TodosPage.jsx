@@ -69,7 +69,7 @@ function TodosPage({ token }) {
 
         dispatch({
           type: TODO_ACTIONS.FETCH_SUCCESS,
-          payload: { data }
+          payload: { data: data.tasks}
         });
 
       } catch (error) {
