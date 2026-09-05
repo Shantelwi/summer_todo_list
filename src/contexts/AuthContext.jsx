@@ -69,6 +69,11 @@ export function AuthProvider({ children }) {
                     credentials: 'include'
                 };
                 const res = await fetch('/api/user/logoff', options);
+                if(!res.ok) {
+                    throw new Error("Something went wrong");
+                }
+                setEmail('');
+                setToken('');
                 return {
                     success: true,
                     res
@@ -76,11 +81,8 @@ export function AuthProvider({ children }) {
             } catch (error) {
                 return {
                     success: false,
-                    error: 'Network error during logoff'
+                    error: error.message
                 };
-            } finally {
-                setEmail('');
-                setToken('');
             }
         }
     }

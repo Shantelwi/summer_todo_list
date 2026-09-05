@@ -293,7 +293,8 @@ function TodosPage() {
           dispatch({
             type: TODO_ACTIONS.SET_SORT,
             payload: {
-              sortBy: newSortBy
+              sortBy: newSortBy,
+              sortDirection: sortDirection
             }
           })
         }}
@@ -301,7 +302,8 @@ function TodosPage() {
           dispatch({
             type: TODO_ACTIONS.SET_SORT,
             payload: {
-              sortDirection: newSortDirection
+              sortDirection: newSortDirection,
+              sortBy: sortBy
             }
           })
         }}
