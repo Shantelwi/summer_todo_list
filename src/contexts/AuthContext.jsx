@@ -51,15 +51,12 @@ export function AuthProvider({ children }) {
     };
 
     const logout = async () => {
-        if (!token) {
-            setEmail('');
-            setToken('');
-
-            return {
-                success: true
-            }
-        }
         try {
+            if (!token) {
+                return {
+                    success: true
+                }
+            }
             const options = {
                 method: 'POST',
                 headers: {
