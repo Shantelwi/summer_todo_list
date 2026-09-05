@@ -16,9 +16,7 @@ function Logon() {
 
         try {
             const result = await login(email, password);
-            if (result.success) {
-                //AuthContext already handled the successful login
-            } else {
+            if (!result.success) {
                 setAuthError(result.error);
             }
         } catch (error) {

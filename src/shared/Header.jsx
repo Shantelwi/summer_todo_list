@@ -1,6 +1,14 @@
+import { useAuth } from "../contexts/AuthContext";
+
 function Header() {
+    const { isAuthenticated } = useAuth();
     return(
-        <h1>Todo List</h1>
+        <header>
+            <h1>
+                {isAuthenticated ? 'Todo List' : "Welcome"}
+            </h1>
+
+        </header>
     )
 }
 
