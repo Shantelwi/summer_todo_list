@@ -8,12 +8,11 @@ function Logoff() {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        setAuthError('');
         setIsLoggingOff(true);
         try {
             const result = await logout();
-            if (result.success) {
-                
-            } else {
+            if (!result.success) {
                 setAuthError(result.error);
             }
         } catch (error) {

@@ -11,7 +11,7 @@ function Logon() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-
+        setAuthError('');
         setIsLoggingOn(true);
 
         try {
