@@ -24,7 +24,7 @@ function Logoff() {
     return(
         <form onSubmit={handleSubmit}>
 
-            {authError && authError}
+            {authError && <p>{authError}</p>}
             <button type="submit" disabled={isLoggingOff}>{isLoggingOff === true ? "Logging off..." : "Log Off" }</button>
         </form>
     )

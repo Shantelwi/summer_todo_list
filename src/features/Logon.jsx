@@ -28,7 +28,7 @@ function Logon() {
     return(
         <form onSubmit={handleSubmit}>
 
-            {authError && authError}
+            {authError && <p>{authError}</p>}
 
             <label htmlFor="email">
                 Email
