@@ -51,12 +51,14 @@ export function AuthProvider({ children }) {
     };
 
     const logout = async () => {
-        try {
-            if (!token) {
-                return {
-                    success: true
-                }
+        if (!token) {
+            setEmail('');
+            setToken('');
+            return {
+                success: true
             }
+        }
+        try {
             const options = {
                 method: 'POST',
                 headers: {
@@ -69,6 +71,10 @@ export function AuthProvider({ children }) {
             if (!res.ok) {
                 throw new Error("Something went wrong");
             }
+
+            setEmail('');
+            setToken('');
+
             return {
                 success: true
             }
@@ -77,9 +83,6 @@ export function AuthProvider({ children }) {
                 success: false,
                 error: error.message
             };
-        } finally {
-            setEmail('');
-            setToken('');
         }
     }
 
