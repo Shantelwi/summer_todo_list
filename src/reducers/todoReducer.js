@@ -62,12 +62,8 @@ export function todoReducer(state, action) {
             return {
                 ...state,
                 isTodoListLoading: false,
-                error: action.payload.isFilterError
-                 ? '' 
-                 : action.payload.message ,
-                filterError: action.payload.isFilterError 
-                ? action.payload.message 
-                : ''
+                error: action.payload.error,
+                filterError: action.payload.filterError
             }
 
         case TODO_ACTIONS.ADD_TODO_START:
@@ -96,9 +92,7 @@ export function todoReducer(state, action) {
         case TODO_ACTIONS.ADD_TODO_ERROR:
             return {
                 ...state,
-                todoList: state.todoList.filter(
-                    todo => todo.id !== action.payload.newTodo.id
-                ),
+                todoList: action.payload.previousTodoList,
                 isTodoListLoading: false,
                 error: `Error: ${action.payload.error}`,
                 filterError:''
@@ -128,10 +122,7 @@ export function todoReducer(state, action) {
         case TODO_ACTIONS.COMPLETE_TODO_ERROR:
             return {
                 ...state,
-                todoList: state.todoList.map(todo =>
-                    todo.id === action.payload.id
-                    ? action.payload.originalTodo
-                    : todo),
+                todoList: action.payload.previousTodoList,
                 isTodoListLoading: false,
                 error: `Error: ${action.payload.error}`,
                 filterError:''
@@ -161,11 +152,7 @@ export function todoReducer(state, action) {
         case TODO_ACTIONS.UPDATE_TODO_ERROR:
             return {
                 ...state,
-                todoList: state.todoList.map( todo =>
-                    todo.id === action.payload.editedTodo.id
-                    ? action.payload.originalTodo
-                    : todo
-                ),
+                todoList: action.payload.previousTodoList,
                 isTodoListLoading: false,
                 error: `Error: ${action.payload.error}`,
                 filterError:''
@@ -174,8 +161,8 @@ export function todoReducer(state, action) {
         case TODO_ACTIONS.SET_SORT:
             return {
                 ...state,
-                sortBy: action.payload.sortBy ?? state.sortBy,
-                sortDirection: action.payload.sortDirection ?? state.sortDirection,
+                sortBy: action.payload.sortBy,
+                sortDirection: action.payload.sortDirection,
                 error:'',
                 filterError:''
             }

@@ -78,16 +78,16 @@ function TodosPage() {
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
             payload: {
-              isFilterError: true,
-              message: `Error filtering/sorting todos: ${error.message}`,
+              error: '',
+              filterError: `Error filtering/sorting todos: ${error.message}`
             }
           })
         } else {
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
             payload: {
-              isFilterError: false,
-              message: `Error fetching todos: ${error.message}`,
+             error: `Error fetching todos: ${error.message}`,
+             filterError: ''
             }
           })
         }
@@ -107,11 +107,14 @@ function TodosPage() {
       isCompleted: false
     };
 
+    const previousTodoList = todoList;
+
     //optimistically add todo
     dispatch({
       type: TODO_ACTIONS.ADD_TODO_START,
       payload: {
-        newTodo: newTodo
+        newTodo: newTodo,
+        previousTodoList: previousTodoList
       }
 
     })
@@ -151,7 +154,7 @@ function TodosPage() {
       dispatch({
         type: TODO_ACTIONS.ADD_TODO_ERROR,
         payload: {
-          newTodo: newTodo,
+          previousTodoList: previousTodoList,
           error: error.message
         }
       })
@@ -160,14 +163,13 @@ function TodosPage() {
 
   // completeTodo function: takes id parameter, maps through the todoList array, checks if each todo.id matches the provided id, if matches returns a new object that spreads the current todo and sets isCompleted to true
   async function completeTodo(id) {
-    //Store the original todo for rollback
-    const originalTodo = todoList.find(todo => todo.id === id);
-
+    const previousTodoList = todoList;
     //Optimistically update the todo
     dispatch({
       type: TODO_ACTIONS.COMPLETE_TODO_START,
       payload: {
         id: id,
+        previousTodoList: previousTodoList
       }
     });
 
@@ -193,12 +195,10 @@ function TodosPage() {
       })
 
     } catch (error) {
-      //Rollback to the original todo
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_ERROR,
         payload: {
-          id: id,
-          originalTodo: originalTodo,
+          previousTodoList: previousTodoList,
           error: error.message
         }
       })
@@ -208,13 +208,14 @@ function TodosPage() {
   //create an updateTodo function that: takes an editedTodo argument and maps through todos, comparing each todo.id with the updated todo's id.
   async function updateTodo(editedTodo) {
     //Store the original todo for rollback
-    const originalTodo = todoList.find(todo => todo.id === editedTodo.id);
+    const previousTodoList = todoList;
 
     //Optimistically update the todo
     dispatch({
       type: TODO_ACTIONS.UPDATE_TODO_START,
       payload: {
-        editedTodo: editedTodo
+        editedTodo: editedTodo,
+        previousTodoList: previousTodoList
       }
     })
 
@@ -245,8 +246,7 @@ function TodosPage() {
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
         payload: {
-          editedTodo: editedTodo,
-          originalTodo: originalTodo,
+          previousTodoList: previousTodoList,
           error: error.message
         }
       })
@@ -292,7 +292,7 @@ function TodosPage() {
             type: TODO_ACTIONS.SET_SORT,
             payload: {
               sortBy: newSortBy,
-              sortDirection: sortDirection
+              sortDirection
             }
           })
         }}
@@ -300,8 +300,8 @@ function TodosPage() {
           dispatch({
             type: TODO_ACTIONS.SET_SORT,
             payload: {
+              sortBy,
               sortDirection: newSortDirection,
-              sortBy: sortBy
             }
           })
         }}
