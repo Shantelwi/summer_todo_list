@@ -214,9 +214,7 @@ function TodosPage() {
     dispatch({
       type: TODO_ACTIONS.UPDATE_TODO_START,
       payload: {
-        editedTodo: editedTodo,
-        originalTodo: originalTodo,
-
+        editedTodo: editedTodo
       }
     })
 

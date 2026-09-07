@@ -70,7 +70,6 @@ export function todoReducer(state, action) {
             return {
                 ...state,
                 todoList: [action.payload.newTodo, ...state.todoList],
-                isTodoListLoading:true,
                 error: '',
                 filterError:''
             }
@@ -82,7 +81,6 @@ export function todoReducer(state, action) {
                     todo => todo.id === action.payload.newTodo.id 
                     ? action.payload.savedTodo 
                     : todo),
-                    isTodoListLoading: false,
                     error:'',
                     filterError:'',
                     dataVersion: state.dataVersion + 1
@@ -95,7 +93,6 @@ export function todoReducer(state, action) {
                 todoList: state.todoList.filter(
                     todo => todo.id !== action.payload.newTodo.id
                 ),
-                isTodoListLoading: false,
                 error: `Error: ${action.payload.error}`,
                 filterError:''
             }
@@ -107,7 +104,6 @@ export function todoReducer(state, action) {
                     todo => todo.id === action.payload.id 
                     ? {...todo, isCompleted:true} 
                     : todo),
-                    isTodoListLoading: true,
                 error: '',
                 filterError:''
             }
@@ -116,7 +112,6 @@ export function todoReducer(state, action) {
             return {
                 ...state,
                 todoList: state.todoList,
-                isTodoListLoading: false,
                 dataVersion: state.dataVersion + 1,
                 error:'',
                 filterError:''
@@ -129,7 +124,6 @@ export function todoReducer(state, action) {
                     todo.id === action.payload.id
                     ? action.payload.originalTodo
                     : todo),
-                    isTodoListLoading: false,
                 error: `Error: ${action.payload.error}`,
                 filterError:''
             }
@@ -141,7 +135,6 @@ export function todoReducer(state, action) {
                     todo => todo.id === action.payload.editedTodo.id 
                     ? { ...todo, ...action.payload.editedTodo}
                     : todo),
-                    isTodoListLoading: true,
                 error: '',
                 filterError:''
             } 
@@ -150,7 +143,6 @@ export function todoReducer(state, action) {
             return {
                 ...state,
                 todoList: state.todoList,
-                isTodoListLoading: false,
                 dataVersion: state.dataVersion + 1,
                 error:'',
                 filterError:''
@@ -164,7 +156,6 @@ export function todoReducer(state, action) {
                     ? action.payload.originalTodo
                     : todo
                 ),
-                isTodoListLoading: false,
                 error: `Error: ${action.payload.error}`,
                 filterError:''
             }
