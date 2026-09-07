@@ -119,7 +119,6 @@ export function todoReducer(state, action) {
         case TODO_ACTIONS.COMPLETE_TODO_SUCCESS:
             return {
                 ...state,
-                todoList: state.todoList,
                 isTodoListLoading: false,
                 dataVersion: state.dataVersion + 1,
                 error:'',
@@ -153,7 +152,6 @@ export function todoReducer(state, action) {
         case TODO_ACTIONS.UPDATE_TODO_SUCCESS:
             return {
                 ...state,
-                todoList: state.todoList,
                 isTodoListLoading: false,
                 dataVersion: state.dataVersion + 1,
                 error:'',
