@@ -1,9 +1,10 @@
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import Logoff from '../features/Logoff';
 
 function ProfilePage() {
-    const { email, logout, token } = useAuth();
+    const { email, token } = useAuth();
     const [stats, setStats] = useState({
         total: 0, 
         completed: 0, 
@@ -23,7 +24,11 @@ function ProfilePage() {
 
             const res = await fetch('/api/tasks', options);
             const data = await res.json();
-            
+            const completed = data.tasks.filter(todo => todo.isCompleted === true).length;
+            const active = data.tasks.filter(todo => todo.isCompleted === false).length;
+            const total = data.tasks.length;
+
+            setStats({total, completed, active});
         }
         fetchStats();
     }, [token]);
@@ -33,12 +38,18 @@ function ProfilePage() {
             <div className="accountdetails">
                 <p>Email: {email}</p>
             </div>
-
             <div className="buttons">
                 <Link className="linkButton" to={'/'}>
                     Go back
                 </Link>
-                <button onClick={logout}> Log off</button>
+                <Logoff/>
+            </div>
+            <div className="results">
+                <p>Total Todos: {stats.total}</p>
+
+                <p>Completed: {stats.completed}</p>
+
+                <p>Active: {stats.active}</p>
             </div>
         </div>
     )

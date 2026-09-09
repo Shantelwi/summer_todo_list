@@ -53,13 +53,13 @@ function AboutPage() {
                 <div className="technologies">
                     <ul>
                         <li>
-                            💾React
+                            💾 React
                         </li>
                         <li>
-                            🧭React Router
+                            🧭 React Router
                         </li>
                         <li>
-                            📟Vite
+                            📟 Vite
                         </li>
                     </ul>
                 </div>
@@ -67,6 +67,9 @@ function AboutPage() {
 
             <Link className="linkButton" to={'/'}>
                 Go back
+            </Link>
+            <Link className="linkButton" to={'/profile'}>
+                Profile
             </Link>
         </>
     )
