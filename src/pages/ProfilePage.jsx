@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import Logoff from '../features/Logoff';
 
 function ProfilePage() {
     const { email, token } = useAuth();
@@ -38,11 +37,10 @@ function ProfilePage() {
             <div className="accountdetails">
                 <p>Email: {email}</p>
             </div>
-            <div className="buttons">
+            <div className="button">
                 <Link className="linkButton" to={'/'}>
                     Go back
                 </Link>
-                <Logoff/>
             </div>
             <div className="results">
                 <p>Total Todos: {stats.total}</p>
