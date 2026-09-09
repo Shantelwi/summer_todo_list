@@ -18,7 +18,7 @@ function TodoForm({ onAddTodo }) {
     return (
         <form onSubmit={handleAddTodo}>
             <TextInputWithLabel 
-                ref={inputRef}
+                inputRef={inputRef}
                 //add a value prop to the input element, setting it to workingTodoTitle
                 value={workingTodoTitle}
                 //add an onChange event handler to the input that takes the event object as a parameter then calls the state setter function with e.target.value
