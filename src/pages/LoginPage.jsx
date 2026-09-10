@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
 function LoginPage() {
-    const {login, isAuthenticated} = useAuth();
+    const {login} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -15,12 +15,6 @@ function LoginPage() {
 
     const from = location.state?.from?.pathname || '/todos';
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate(from, {replace: true});
-        }
-    },[isAuthenticated, navigate, from]);
-
     async function handleSubmit(e) {
         e.preventDefault();
         setAuthError('');
@@ -28,7 +22,9 @@ function LoginPage() {
 
         try {
             const result = await login(email, password);
-            if (!result.success) {
+            if (result.success) {
+                navigate(from, {replace: true});
+            }else {
                 setAuthError(result.error);
             }
         } catch (error) {
@@ -70,7 +66,7 @@ function LoginPage() {
             disabled={isLoggingOn}>
                 {isLoggingOn === true 
                 ? "Logging in..." 
-                : "Log On" }
+                : "Log In" }
                 </button>
         </form>
     )

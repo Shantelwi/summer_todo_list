@@ -7,9 +7,6 @@ function NotFoundPage() {
             <Link className="linkButton" to={'/'}>
                 Go back Home
             </Link>
-            <Link className="linkButton" to={'/profile'}>
-                Profile
-            </Link>
             <Link className="linkButton" to={'/about'}>
                 About
             </Link>

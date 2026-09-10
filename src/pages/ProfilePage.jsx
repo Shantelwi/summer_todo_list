@@ -64,14 +64,14 @@ function ProfilePage() {
     return (
         <div className="account">
             <div className="button">
-                <Link className="linkButton" to={'/'}>
-                    Go back
+                <Link className="linkButton" to={'/todos'}>
+                   Todos
                 </Link>
             </div>
             <h2>Profile Page</h2>
 
             <div className="accountdetails">
-                <p>Name: {name}</p>
+                <p>Name: {name || 'Unknown'}</p>
             </div>
 
             <p>Status: {isAuthenticated ? 'Authenticated' : 'Not authenticated'}</p>

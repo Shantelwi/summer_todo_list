@@ -56,6 +56,7 @@ export function AuthProvider({ children }) {
         if (!token) {
             setEmail('');
             setToken('');
+            setName('');
             return {
                 success: true
             }
@@ -76,7 +77,7 @@ export function AuthProvider({ children }) {
 
             setEmail('');
             setToken('');
-
+            setName('');
             return {
                 success: true
             }

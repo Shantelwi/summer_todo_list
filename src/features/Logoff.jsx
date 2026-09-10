@@ -3,13 +3,12 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router";
 
 function Logoff() {
-    const {logout} = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
     const [isLoggingOff, setIsLoggingOff] = useState(false);
     const [authError, setAuthError] = useState('');
 
-    async function handleLogoff(e) {
-        e.preventDefault();
+    async function handleLogoff() {
         setIsLoggingOff(true);
         setAuthError('');
 
@@ -17,17 +16,18 @@ function Logoff() {
 
         if (result.success) {
             navigate('/login');
-        }else {
+        } else {
             setAuthError(result.error);
             setIsLoggingOff(false);
         }
     }
-    return(
-        <form onSubmit={handleLogoff}>
-
+    return (
+        <>
             {authError && <p>{authError}</p>}
-            <button type="submit" disabled={isLoggingOff}>{isLoggingOff === true ? "Logging off..." : "Log Off" }</button>
-        </form>
+            <button onClick={handleLogoff} disabled={isLoggingOff}>
+                {isLoggingOff === true ? "Logging off..." : "Log Off"}
+            </button>
+        </>
     )
 }
 
