@@ -41,7 +41,7 @@ function ProfilePage() {
 
                 const data = await res.json();
 
-                const todos = data.tasks;
+                const todos = Array.isArray(data) ? data : data.tasks;
 
                 const total = todos.length;
                 const completed = todos.filter((todo) => todo.isCompleted).length;
@@ -85,9 +85,12 @@ function ProfilePage() {
 
                     <p>Active: {stats.active}</p>
 
-                    {stats.total > 0 && (
+                    {stats.total > 0 ? (
                         <p>Completion: {Math.round((stats.completed / stats.total) * 100)}%</p>
+                    ) : (
+                        <p>No todos yet. Completion percentage will appear after you add a todo.</p>
                     )}
+
                 </div>
             )}
         </div>
