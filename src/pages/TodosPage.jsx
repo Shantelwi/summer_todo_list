@@ -12,7 +12,7 @@ import StatusFilter from "../shared/StatusFilter";
 function TodosPage() {
   const { token } = useAuth();
   const [searchParams] = useSearchParams();
-  const statusFilter = searchParams.get('status') || 'active';
+  const statusFilter = searchParams.get('status') || 'all';
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
 
   const {

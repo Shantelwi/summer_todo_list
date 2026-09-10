@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import TodoListItem from "./TodoListItem.jsx"
 
 
-function TodoList({ todoList, onCompleteTodo, onUpdateTodo, dataVersion, statusFilter = 'active' }) {
+function TodoList({ todoList, onCompleteTodo, onUpdateTodo, dataVersion, statusFilter = 'all' }) {
 
     const filteredTodoList = useMemo(() => {
 
