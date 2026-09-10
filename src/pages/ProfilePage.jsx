@@ -23,7 +23,6 @@ function ProfilePage() {
                 const options = {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': token
                     },
                     credentials: 'include'
@@ -71,10 +70,12 @@ function ProfilePage() {
             <h2>Profile Page</h2>
 
             <div className="accountdetails">
+                <h2>Account Info</h2>
                 <p>Name: {name || 'Unknown'}</p>
+                <p>Status: {isAuthenticated ? 'Authenticated' : 'Not authenticated'}</p>
+                <p>Token: {token || ''}</p>
             </div>
 
-            <p>Status: {isAuthenticated ? 'Authenticated' : 'Not authenticated'}</p>
 
             {loading ? (
                 <p>Loading statistics...</p>
