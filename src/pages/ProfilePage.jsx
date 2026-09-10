@@ -41,7 +41,11 @@ function ProfilePage() {
 
                 const data = await res.json();
 
-                const todos = Array.isArray(data) ? data : data.tasks;
+                const todos = Array.isArray(data) 
+                ? data 
+                : Array.isArray(data.tasks)
+                    ? data.tasks
+                    : [];
 
                 const total = todos.length;
                 const completed = todos.filter((todo) => todo.isCompleted).length;

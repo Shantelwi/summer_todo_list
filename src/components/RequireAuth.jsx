@@ -3,24 +3,21 @@ import { useAuth } from "../contexts/AuthContext";
 import { useEffect } from "react";
 
 function RequireAuth({children}) {
-    const {isAuthenticated, isAuthChecking} = useAuth();
+    const {isAuthenticated} = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!isAuthChecking && !isAuthenticated) {
+        if (!isAuthenticated) {
             navigate('/login', {
                 state: {from:location},
                 replace: true
             });
         }
-    }, [isAuthChecking, isAuthenticated, navigate, location]);
-    if (isAuthChecking) {
-        return <p>Loading...</p>;
-    }
+    }, [isAuthenticated, navigate, location]);
 
     if (!isAuthenticated) {
-        return null;
+        return <p>Loading...</p>;
     }
 
     return children;
