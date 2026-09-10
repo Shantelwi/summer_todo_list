@@ -68,9 +68,6 @@ function AboutPage() {
             <Link className="linkButton" to={'/'}>
                 Go back
             </Link>
-            <Link className="linkButton" to={'/profile'}>
-                Profile
-            </Link>
         </>
     )
 }

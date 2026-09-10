@@ -14,6 +14,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
     //state for authentication
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
 
@@ -32,6 +33,7 @@ export function AuthProvider({ children }) {
 
             if (res.status === 200 && data.email && data.csrfToken) {
                 //success: update state
+                setName(data.name);
                 setEmail(data.email);
                 setToken(data.csrfToken);
                 return { success: true }
@@ -88,6 +90,7 @@ export function AuthProvider({ children }) {
 
     //context value object
     const value = {
+        name,
         email, //Current user's email
         token,//CSRF token for API requests
         isAuthenticated: !!token,//Computed boolean for auth status
