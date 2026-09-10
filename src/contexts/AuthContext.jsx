@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 //create the context
 const AuthContext = createContext();
@@ -17,6 +17,11 @@ export function AuthProvider({ children }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
+    const [isAuthChecking, setIsAuthChecking] = useState(true);
+
+    useEffect(() => {
+        setIsAuthChecking(false);
+    }, []);
 
     //Functions will go here
     const login = async (userEmail, password) => {
@@ -94,6 +99,7 @@ export function AuthProvider({ children }) {
         email, //Current user's email
         token,//CSRF token for API requests
         isAuthenticated: !!token,//Computed boolean for auth status
+        isAuthChecking,
         login,//function to authenticate user
         logout//function to clear authentication
     };
