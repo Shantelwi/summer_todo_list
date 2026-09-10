@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router";
 
-function StatusFitler() {
+function StatusFilter() {
     const [searchParams,  setSearchParams] = useSearchParams();
     const currentStatus = searchParams.get('status') || 'all';
 
@@ -25,4 +25,4 @@ function StatusFitler() {
     )
 }
 
-export default StatusFitler;
+export default StatusFilter;

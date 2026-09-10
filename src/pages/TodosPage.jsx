@@ -7,7 +7,7 @@ import useDebounce from "../utils/useDebounce";
 import { todoReducer, initialTodoState, TODO_ACTIONS } from '../reducers/todoReducer';
 import { useAuth } from "../contexts/AuthContext";
 import { useSearchParams } from "react-router";
-import StatusFitler from "../shared/StatusFilter";
+import StatusFilter from "../shared/StatusFilter";
 
 function TodosPage() {
   const { token } = useAuth();
@@ -310,7 +310,7 @@ function TodosPage() {
         }}
       />
 
-      <StatusFitler/>
+      <StatusFilter/>
 
       <FilterInput
         filterTerm={filterTerm}

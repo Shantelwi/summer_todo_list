@@ -21,7 +21,7 @@ function Navigation() {
                             <NavLink to='/todos' style={navLinkStyle}>Todos</NavLink>
                         </li>
                         <li>
-                            <NavLink to='/profile' style={navLinkStyle}>Profile Page</NavLink>
+                            <NavLink to='/profile' style={navLinkStyle}>Profile</NavLink>
                         </li>
                     </>
                 ) : (
