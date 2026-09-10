@@ -10,6 +10,12 @@ function NotFoundPage() {
             <Link className="linkButton" to={'/profile'}>
                 Profile
             </Link>
+            <Link className="linkButton" to={'/about'}>
+                About
+            </Link>
+            <Link className="linkButton" to={'/login'}>
+                Login
+            </Link>
         </div>
     )
 }
