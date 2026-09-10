@@ -73,7 +73,6 @@ function ProfilePage() {
                 <h2>Account Info</h2>
                 <p>Name: {name || 'Unknown'}</p>
                 <p>Status: {isAuthenticated ? 'Authenticated' : 'Not authenticated'}</p>
-                <p>Token: {token || ''}</p>
             </div>
 
 
