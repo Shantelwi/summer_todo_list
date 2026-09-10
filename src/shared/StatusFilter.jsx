@@ -5,12 +5,13 @@ function StatusFilter() {
     const currentStatus = searchParams.get('status') || 'all';
 
     const handleStatusChange = (status) => {
+        const newParams = new URLSearchParams(searchParams);
         if (status === 'all') {
-            searchParams.delete('status');
+            newParams.delete('status');
         } else {
-            searchParams.set('status', status);
+            newParams.set('status', status);
         }
-        setSearchParams(searchParams);
+        setSearchParams(newParams);
     };
 
     return(

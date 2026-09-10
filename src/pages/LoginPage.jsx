@@ -12,7 +12,7 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [authError, setAuthError] = useState('');
     const [isLoggingOn, setIsLoggingOn] = useState(false);
-    
+
     const from = location.state?.from?.pathname || '/todos';
 
     useEffect(() => {
@@ -28,9 +28,7 @@ function LoginPage() {
 
         try {
             const result = await login(email, password);
-            if (result.success) {
-                navigate(from, {replace: true});
-            }else {
+            if (!result.success) {
                 setAuthError(result.error);
             }
         } catch (error) {
