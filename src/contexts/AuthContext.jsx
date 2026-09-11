@@ -1,9 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
-//create the context
 const AuthContext = createContext();
 
-//custom hook with error checking
 export function useAuth() {
     const context = useContext(AuthContext);
     if (!context) {
@@ -14,10 +12,10 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
     //state for authentication
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
 
-    //Functions will go here
     const login = async (userEmail, password) => {
         try {
             const options = {
@@ -30,13 +28,13 @@ export function AuthProvider({ children }) {
             const res = await fetch('/api/users/logon', options);
             const data = await res.json();
 
-            if (res.status === 200 && data.name && data.csrfToken) {
+            if (res.status === 200 && data.email && data.csrfToken) {
                 //success: update state
-                setEmail(data.name);
+                setName(data.name);
+                setEmail(data.email);
                 setToken(data.csrfToken);
                 return { success: true }
             } else {
-                //failure: return error
                 return {
                     success: false,
                     error: `Authentication failed: ${data?.message}`
@@ -54,6 +52,7 @@ export function AuthProvider({ children }) {
         if (!token) {
             setEmail('');
             setToken('');
+            setName('');
             return {
                 success: true
             }
@@ -67,14 +66,14 @@ export function AuthProvider({ children }) {
                 },
                 credentials: 'include'
             };
-            const res = await fetch('/api/user/logoff', options);
+            const res = await fetch('/api/users/logoff', options);
             if (!res.ok) {
                 throw new Error("Something went wrong");
             }
 
             setEmail('');
             setToken('');
-
+            setName('');
             return {
                 success: true
             }
@@ -86,13 +85,13 @@ export function AuthProvider({ children }) {
         }
     }
 
-    //context value object
     const value = {
-        email, //Current user's email
-        token,//CSRF token for API requests
-        isAuthenticated: !!token,//Computed boolean for auth status
-        login,//function to authenticate user
-        logout//function to clear authentication
+        name,
+        email,
+        token,
+        isAuthenticated: !!token,
+        login,
+        logout
     };
 
     return (

@@ -1,32 +1,33 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router";
 
 function Logoff() {
-    const {logout} = useAuth();
+    const { logout } = useAuth();
+    const navigate = useNavigate();
     const [isLoggingOff, setIsLoggingOff] = useState(false);
     const [authError, setAuthError] = useState('');
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        setAuthError('');
+    async function handleLogoff() {
         setIsLoggingOff(true);
-        try {
-            const result = await logout();
-            if (!result.success) {
-                setAuthError(result.error);
-            }
-        } catch (error) {
-            setAuthError(`Error: ${error.name} | ${error.message}`);
-        } finally {
+        setAuthError('');
+
+        const result = await logout();
+
+        if (result.success) {
+            navigate('/login');
+        } else {
+            setAuthError(result.error);
             setIsLoggingOff(false);
         }
     }
-    return(
-        <form onSubmit={handleSubmit}>
-
+    return (
+        <>
             {authError && <p>{authError}</p>}
-            <button type="submit" disabled={isLoggingOff}>{isLoggingOff === true ? "Logging off..." : "Log Off" }</button>
-        </form>
+            <button onClick={handleLogoff} disabled={isLoggingOff}>
+                {isLoggingOff === true ? "Logging off..." : "Log Off"}
+            </button>
+        </>
     )
 }
 

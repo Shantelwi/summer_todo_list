@@ -1,18 +1,20 @@
 import { useEffect, useReducer } from "react";
-import TodoForm from "./TodoForm";
-import TodoList from "./TodoList/TodoList";
-import SortBy from "../../shared/SortBy";
-import FilterInput from "../../shared/FilterInput";
-import useDebounce from "../../utils/useDebounce";
-import { todoReducer, initialTodoState, TODO_ACTIONS } from '../../reducers/todoReducer';
-import { useAuth } from "../../contexts/AuthContext";
+import TodoForm from "../features/Todos/TodoForm";
+import TodoList from "../features/Todos/TodoList/TodoList";
+import SortBy from "../shared/SortBy";
+import FilterInput from "../shared/FilterInput";
+import useDebounce from "../utils/useDebounce";
+import { todoReducer, initialTodoState, TODO_ACTIONS } from '../reducers/todoReducer';
+import { useAuth } from "../contexts/AuthContext";
+import { useSearchParams } from "react-router";
+import StatusFilter from "../shared/StatusFilter";
 
 function TodosPage() {
   const { token } = useAuth();
-  
-  //replace all useState calls with useReducer and destructuring useReducer's state
+  const [searchParams] = useSearchParams();
+  const statusFilter = searchParams.get('status') || 'all';
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
-  
+
   const {
     todoList,
     error,
@@ -23,9 +25,9 @@ function TodosPage() {
     filterTerm,
     dataVersion
   } = state;
-  
+
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
-  
+
   const handleFilterChange = (newTerm) => {
     dispatch({
       type: TODO_ACTIONS.SET_FILTER,
@@ -34,9 +36,8 @@ function TodosPage() {
       }
     })
   };
-  
+
   useEffect(() => {
-    //update fetchTodos function to include filter when present
     async function fetchTodos() {
       try {
         dispatch({ type: TODO_ACTIONS.FETCH_START });
@@ -70,7 +71,7 @@ function TodosPage() {
 
         dispatch({
           type: TODO_ACTIONS.FETCH_SUCCESS,
-          payload: { data: data.tasks}
+          payload: { data: data.tasks }
         });
 
       } catch (error) {
@@ -86,8 +87,8 @@ function TodosPage() {
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
             payload: {
-             error: `Error fetching todos: ${error.message}`,
-             filterError: ''
+              error: `Error fetching todos: ${error.message}`,
+              filterError: ''
             }
           })
         }
@@ -100,7 +101,6 @@ function TodosPage() {
   }, [token, sortBy, sortDirection, debouncedFilterTerm]);
 
   async function addTodo(todoTitle) {
-    //Transform the existing addTodo function to work with the API
     const newTodo = {
       id: Date.now(),
       title: todoTitle,
@@ -139,8 +139,6 @@ function TodosPage() {
 
       const savedTodo = await response.json();
 
-      //replace temporary todo with the real server todo
-
       dispatch({
         type: TODO_ACTIONS.ADD_TODO_SUCCESS,
         payload: {
@@ -150,7 +148,6 @@ function TodosPage() {
       })
 
     } catch (error) {
-      //Remove failed todo
       dispatch({
         type: TODO_ACTIONS.ADD_TODO_ERROR,
         payload: {
@@ -161,10 +158,8 @@ function TodosPage() {
     }
   }
 
-  // completeTodo function: takes id parameter, maps through the todoList array, checks if each todo.id matches the provided id, if matches returns a new object that spreads the current todo and sets isCompleted to true
   async function completeTodo(id) {
     const previousTodoList = todoList;
-    //Optimistically update the todo
     dispatch({
       type: TODO_ACTIONS.COMPLETE_TODO_START,
       payload: {
@@ -205,12 +200,10 @@ function TodosPage() {
     }
   }
 
-  //create an updateTodo function that: takes an editedTodo argument and maps through todos, comparing each todo.id with the updated todo's id.
   async function updateTodo(editedTodo) {
-    //Store the original todo for rollback
+
     const previousTodoList = todoList;
 
-    //Optimistically update the todo
     dispatch({
       type: TODO_ACTIONS.UPDATE_TODO_START,
       payload: {
@@ -242,7 +235,6 @@ function TodosPage() {
       })
 
     } catch (error) {
-      //Rollback to the original todo
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
         payload: {
@@ -306,6 +298,9 @@ function TodosPage() {
           })
         }}
       />
+
+      <StatusFilter />
+
       <FilterInput
         filterTerm={filterTerm}
         onFilterChange={handleFilterChange}
@@ -313,9 +308,11 @@ function TodosPage() {
       <TodoForm onAddTodo={addTodo} />
       <TodoList
         todoList={todoList}
-        onCompleteTodo={completeTodo} /*add an onCompleteTodo prop to the TodoList component, passing in your completeTodo functioon  */
+        onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
-        dataVersion={dataVersion} />
+        dataVersion={dataVersion}
+        statusFilter={statusFilter}
+      />
     </>
   )
 }

@@ -70,7 +70,6 @@ export function todoReducer(state, action) {
             return {
                 ...state,
                 todoList: [action.payload.newTodo, ...state.todoList],
-                isTodoListLoading: true,
                 error: '',
                 filterError: ''
             };
@@ -104,7 +103,6 @@ export function todoReducer(state, action) {
                     todo => todo.id === action.payload.id
                         ? { ...todo, isCompleted: true }
                         : todo),
-                isTodoListLoading: true,
                 error: '',
                 filterError: ''
             };
@@ -135,7 +133,6 @@ export function todoReducer(state, action) {
                     todo => todo.id === action.payload.editedTodo.id
                         ? { ...todo, ...action.payload.editedTodo }
                         : todo),
-                isTodoListLoading: true,
                 error: '',
                 filterError: ''
             };
