@@ -28,8 +28,9 @@ function LoginPage() {
 
         try {
             const result = await login(email, password);
-            if (!result.success){
-                setAuthError(result.error);
+            if (result.success){
+                
+            }else {setAuthError(result.error);
             }
         } catch (error) {
             setAuthError(`Error: ${error.name} | ${error.message}`);

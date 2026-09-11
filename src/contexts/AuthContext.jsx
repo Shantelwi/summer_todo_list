@@ -1,9 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
-//create the context
 const AuthContext = createContext();
 
-//custom hook with error checking
 export function useAuth() {
     const context = useContext(AuthContext);
     if (!context) {
@@ -18,7 +16,6 @@ export function AuthProvider({ children }) {
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
 
-    //Functions will go here
     const login = async (userEmail, password) => {
         try {
             const options = {
@@ -38,7 +35,6 @@ export function AuthProvider({ children }) {
                 setToken(data.csrfToken);
                 return { success: true }
             } else {
-                //failure: return error
                 return {
                     success: false,
                     error: `Authentication failed: ${data?.message}`
@@ -89,14 +85,13 @@ export function AuthProvider({ children }) {
         }
     }
 
-    //context value object
     const value = {
         name,
-        email, //Current user's email
-        token,//CSRF token for API requests
-        isAuthenticated: !!token,//Computed boolean for auth status
-        login,//function to authenticate user
-        logout//function to clear authentication
+        email,
+        token,
+        isAuthenticated: !!token,
+        login,
+        logout
     };
 
     return (

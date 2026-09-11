@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
 function ProfilePage() {
-    const { name, token, isAuthenticated } = useAuth();
+    const { name, email, token, isAuthenticated } = useAuth();
     const [stats, setStats] = useState({
         total: 0,
         completed: 0,
         active: 0
     });
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -40,11 +40,7 @@ function ProfilePage() {
 
                 const data = await res.json();
 
-                const todos = Array.isArray(data) 
-                ? data 
-                : Array.isArray(data.tasks)
-                    ? data.tasks
-                    : [];
+                const todos = data.tasks;
 
                 const total = todos.length;
                 const completed = todos.filter((todo) => todo.isCompleted).length;
@@ -72,6 +68,7 @@ function ProfilePage() {
             <div className="accountdetails">
                 <h2>Account Info</h2>
                 <p>Name: {name || 'Unknown'}</p>
+                <p>Email: {email || 'Unknown'}</p>
                 <p>Status: {isAuthenticated ? 'Authenticated' : 'Not authenticated'}</p>
             </div>
 
