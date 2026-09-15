@@ -66,13 +66,15 @@ function LoginPage() {
                     required
                 />
             </label>
+            <button 
+                className='login-button'
+                type="submit" 
+                disabled={isLoggingOn}>
+                    {isLoggingOn === true 
+                    ? "Logging in..." 
+                    : "Log In" }
+            </button>
 
-            <button type="submit" 
-            disabled={isLoggingOn}>
-                {isLoggingOn === true 
-                ? "Logging in..." 
-                : "Log In" }
-                </button>
         </form>
     )
 }

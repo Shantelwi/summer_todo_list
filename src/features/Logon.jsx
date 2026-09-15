@@ -54,7 +54,12 @@ function Logon() {
                 />
             </label>
 
-            <button type="submit" disabled={isLoggingOn}>{isLoggingOn === true ? "Logging in..." : "Log On" }</button>
+            <button 
+                className='login-button'
+                type="submit"  
+                disabled={isLoggingOn}>{isLoggingOn === true 
+                ? "Logging in..." : "Log On" }
+            </button>
         </form>
     )
 }

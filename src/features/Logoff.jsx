@@ -24,7 +24,10 @@ function Logoff() {
     return (
         <>
             {authError && <p>{authError}</p>}
-            <button onClick={handleLogoff} disabled={isLoggingOff}>
+            <button 
+                className='logoff'
+                onClick={handleLogoff} 
+                disabled={isLoggingOff}>
                 {isLoggingOff === true ? "Logging off..." : "Log Off"}
             </button>
         </>

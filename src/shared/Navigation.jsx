@@ -26,7 +26,13 @@ function Navigation() {
                     </>
                 ) : (
                     <li>
-                        <NavLink to='/login' style={navLinkStyle}>Login</NavLink>
+                        <NavLink 
+                            className='login'
+                            to='/login' 
+                            style={navLinkStyle}
+                            >
+                                Login
+                        </NavLink>
                     </li>
                 )}
             </ul>
