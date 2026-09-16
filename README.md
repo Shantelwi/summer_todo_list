@@ -29,7 +29,7 @@ A modern Todo web application built with **React** and **Vite**.
 
 ## 🌐 Live Demo
 
-Coming soon — the application will be deployed after the project is completed.
+summer-todo-list-euof80td5-shantelwis-projects.vercel.app
 
 ## 📸 Screenshots
 
