@@ -60,25 +60,11 @@ npm install
 
 ## 📜 Available Scripts
 
-In the project directory, you can run:
+The following commands are available in the project:
 
-```bash
-npm run dev
-```
-
-Starts the development server.
-
-```bash
-npm run build
-```
-
-Builds the application for production.
-
-```bash
-npm run preview
-```
-
-Previews the production build locally.
+* `npm run dev` — Starts the Vite development server.
+* `npm run build` — Builds the application for production.
+* `npm run preview` — Previews the production build locally.
 
 Open:
 
