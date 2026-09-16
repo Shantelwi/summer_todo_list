@@ -1,35 +1,32 @@
 import { NavLink } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
-const navLinkStyle = ({ isActive }) => ({
-    fontWeight: isActive ? 'bold' : 'normal',
-    textDecoration: isActive ? 'underline' : 'none'
-});
+const navLinkStyle = ({ isActive }) =>
+    isActive ? 'nav-link active' : 'nav-link';
 
 function Navigation() {
     const { isAuthenticated } = useAuth();
     return (
-        <nav>
-            <ul style={{ listStyle: 'none', display: 'flex', gap: '1rem', padding: 0 }}>
+        <nav aria-label="Main navigation">
+            <ul className="nav-list">
                 <li>
-                    <NavLink to='/about' style={navLinkStyle}> About </NavLink>
+                    <NavLink to='/about' className={navLinkStyle}> About </NavLink>
                 </li>
 
                 {isAuthenticated ? (
                     <>
                         <li>
-                            <NavLink to='/todos' style={navLinkStyle}>Todos</NavLink>
+                            <NavLink to='/todos' className={navLinkStyle}>Todos</NavLink>
                         </li>
                         <li>
-                            <NavLink to='/profile' style={navLinkStyle}>Profile</NavLink>
+                            <NavLink to='/profile' className={navLinkStyle}>Profile</NavLink>
                         </li>
                     </>
                 ) : (
                     <li>
-                        <NavLink 
-                            className='login'
+                        <NavLink
                             to='/login' 
-                            style={navLinkStyle}
+                            className={navLinkStyle}
                             >
                                 Login
                         </NavLink>

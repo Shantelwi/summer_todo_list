@@ -266,7 +266,7 @@ function TodosPage() {
       )}
 
       {filterError && (
-        <div className="filter-error">
+        <div className="error-message">
           <p>{filterError}</p>
           <button
             onClick={() =>
