@@ -51,6 +51,7 @@ function AboutPage() {
 
             <section className="infoBox3">
                 <div className="technologies">
+                    <h3>Technologies</h3>
                     <ul>
                         <li>
                             💾 React

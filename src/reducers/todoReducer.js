@@ -25,7 +25,6 @@ export const TODO_ACTIONS = {
     RESET_FILTERS: 'RESET_FILTERS'
 };
 
-//transform all useState calls into a single state object
 export const initialTodoState = {
     todoList: [],
     error: '',
@@ -36,8 +35,6 @@ export const initialTodoState = {
     filterTerm: '',
     dataVersion: 0
 };
-
-//Implement a reducer that handles each action type
 
 export function todoReducer(state, action) {
     switch (action.type) {

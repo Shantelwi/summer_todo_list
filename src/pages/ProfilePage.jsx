@@ -47,8 +47,8 @@ function ProfilePage() {
                 const active = total - completed;
 
                 setStats({ total, completed, active });
-            } catch (error) {
-                setError(`Error loading statistics: ${error.message}`);
+            } catch {
+                setError("Unable to load your statistics. Please try again.");
             } finally {
                 setLoading(false);
             }
@@ -60,12 +60,12 @@ function ProfilePage() {
         <div className="account">
             <div className="button">
                 <Link className="linkButton" to={'/todos'}>
-                   Todos
+                   Back
                 </Link>
             </div>
             <h2>Profile Page</h2>
 
-            <div className="accountdetails">
+            <div className="accountDetails">
                 <h2>Account Info</h2>
                 <p>Name: {name || 'Unknown'}</p>
                 <p>Email: {email || 'Unknown'}</p>
