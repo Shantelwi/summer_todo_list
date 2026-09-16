@@ -37,11 +37,11 @@ Coming soon — the application will be deployed after the project is completed.
 
 Screenshot of the Todo application on a desktop screen.
 
-![Desktop View](public\Screenshot 2026-09-15 185110.png)
-![Desktop View](public\Screenshot 2026-09-15 185140.png)
-![Desktop View](public\Screenshot 2026-09-15 185659.png)
-![Desktop View](public\Screenshot 2026-09-15 185714.png)
-![Desktop View](public\Screenshot 2026-09-15 185734.png)
+![Desktop View](public\desktop-1.png)
+![Desktop View](public\desktop-2.png)
+![Desktop View](public\desktop-3.png)
+![Desktop View](public\desktop-4.png)
+![Desktop View](public\desktop-5.png)
 
 ---
 
