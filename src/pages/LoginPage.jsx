@@ -67,7 +67,7 @@ function LoginPage() {
                         value = {password}
                         onChange = {(e) => {setPassword(e.target.value)}}
                         required
-                        maxLength={10}
+                        maxLength={50}
                     />
                 </label>
                 <button 
