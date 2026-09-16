@@ -4,12 +4,16 @@ import TextInputWithLabel from '../../shared/TextInputWithLabel.jsx';
 
 
 function TodoForm({ onAddTodo }) {
-    //add local state 
     const [workingTodoTitle, setWorkingTodoTitle] = useState("");
     const inputRef = useRef();
 
     const handleAddTodo = (e) => {
         e.preventDefault();
+
+        if (!isValidTodoTitle(workingTodoTitle)) {
+            return;
+        }
+        
         onAddTodo(workingTodoTitle);
         setWorkingTodoTitle("");
         inputRef.current.focus();
@@ -29,7 +33,7 @@ function TodoForm({ onAddTodo }) {
                 type="submit"   
                 disabled={!isValidTodoTitle(workingTodoTitle)} 
                 >Add Todo
-            </button> {/* add a disabled prop. set the disabled prop to true when workingTodoTitle is an empty string or contains only whitespace. */}
+            </button> 
         </form>
     );
 }

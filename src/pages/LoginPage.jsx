@@ -32,50 +32,55 @@ function LoginPage() {
                 
             }else {setAuthError(result.error);
             }
-        } catch (error) {
-            setAuthError(`Error: ${error.name} | ${error.message}`);
+        } catch {
+            setAuthError('Unable to log in. Please check your email and password and try again.');
         } finally {
             setIsLoggingOn(false);
         }
     }
     return(
-        <form onSubmit={handleSubmit}>
+        <div className="login-page">
 
-            {authError && <p>{authError}</p>}
+            <form onSubmit={handleSubmit}>
 
-            <label htmlFor="email">
-                Email
-                <input
-                type="email"
-                id="email"
-                name="email"
-                value = {email}
-                onChange = {(e) => {setEmail(e.target.value)} }
-                required
-                />
-            </label>
+                {authError && <p className="error-message">{authError}</p>}
 
-            <label htmlFor="password">
-                Password
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value = {password}
-                    onChange = {(e) => {setPassword(e.target.value)}}
+                <label htmlFor="email">
+                    Email
+                    <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value = {email}
+                    onChange = {(e) => {setEmail(e.target.value)} }
                     required
-                />
-            </label>
-            <button 
-                className='login-button'
-                type="submit" 
-                disabled={isLoggingOn}>
-                    {isLoggingOn === true 
-                    ? "Logging in..." 
-                    : "Log In" }
-            </button>
+                    maxLength={60}
+                    />
+                </label>
 
-        </form>
+                <label htmlFor="password">
+                    Password
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value = {password}
+                        onChange = {(e) => {setPassword(e.target.value)}}
+                        required
+                        maxLength={10}
+                    />
+                </label>
+                <button 
+                    className='login-button'
+                    type="submit" 
+                    disabled={isLoggingOn}>
+                        {isLoggingOn === true 
+                        ? "Logging in..." 
+                        : "Log In" }
+                </button>
+
+            </form>
+        </div>
     )
 }
 

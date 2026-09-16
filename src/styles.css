@@ -12,6 +12,8 @@ body {
 }
 
 @media (max-width: 600px) {
+
+    /* todo page */
     .sort-option {
         flex-direction: column;
         align-items: flex-start;
@@ -56,9 +58,28 @@ body {
         top: 10px;
         right: 10px;
     }
+
+    /* login page */
+    .login-page {
+        margin: 30px auto;
+        padding: 15px;
+    }
+
+    /* profile page */
+    .account{
+        margin: 20px auto;
+        padding: 15px
+    }
+
+    /* about page */
+    .infoBox1,
+    .infoBox2,
+    .infoBox3 {
+        padding: 15px;
+    }
 }
 
-
+/* todos page styling */
 .todos-page{
     width: 100%;
     max-width: 900px;
@@ -125,7 +146,8 @@ label {
     padding: 20px;
     border: 1px solid #1c4a61;
     border-radius: 6px;
-    background-color: #063b55
+    background-color: #063b55;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
 }
 
 #sortBy,
@@ -390,4 +412,189 @@ form {
 
 .todo-title:hover {
     text-decoration: underline;
+}
+
+/* Login page styling */
+.login-page {
+    width: 100%;
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #063b55;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.login-page form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.login-page label {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-page input {
+    width: 100%;
+    max-width: none;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-page button {
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    max-width: none;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.login-page input:focus {
+    outline: 2px solid #007bff;
+    border-color: #dbaa09;
+    box-shadow: 0 0 5px rgba(218, 170, 9, 0.5);
+}
+
+/* Profile page */
+.account {
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.account > h2 {
+    text-align: center;
+    color: #dbaa09;
+    margin-bottom: 20px;
+}
+
+.accountDetails {
+    padding:20px;
+    border: 1px solid #1c4a61;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+    background-color: #063b55;
+}
+
+.accountDetails h2 {
+    margin-top: 0;
+    color: #dbaa09;
+}
+
+.accountDetails p {
+    margin: 10px 0;
+}
+
+.results {
+    padding: 20px;
+    border: 1px solid #1c4a61;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+    background-color: #063b55;
+}
+
+.results p {
+    margin: 10px 0;
+}
+
+.linkButton {
+    display: inline-block;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.linkButton:hover{
+    opacity: 0.8;
+}
+
+.button{
+    margin-bottom: 20px;
+}
+
+.account > p {
+    text-align: center;
+}
+
+/* About page */
+.infoBox1 {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #1c4a61;
+    border-radius: 6px;
+    background-color: #063b55;
+    line-height: 1.6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.infoBox2 {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #1c4a61;
+    border-radius: 6px;
+    background-color: #063b55;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.app_features h3 {
+    margin-top: 0;
+    color: #dbaa09;
+}
+
+.app_features ul {
+    padding-left: 20px;
+    list-style: none;
+}
+
+.app_features li {
+    margin-bottom: 8px;
+}
+
+.infoBox3 {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #1c4a61;
+    border-radius: 6px;
+    background-color: #063b55;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.technologies h3 {
+    margin-top: 0;
+    color: #dbaa09;
+}
+
+.technologies ul {
+    padding-left: 20px;
+    list-style: none;
+    margin-bottom: 8px;
+}
+
+.infoBox3 + .linkButton {
+    display: block;
+    width: fit-content;
+    margin: 20px auto;
 }

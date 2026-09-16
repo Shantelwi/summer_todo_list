@@ -78,7 +78,7 @@ function TodosPage() {
           type: TODO_ACTIONS.FETCH_SUCCESS,
           payload: { data: data.tasks },
         });
-      } catch (error) {
+      } catch {
         if (
           debouncedFilterTerm ||
           sortBy !== "createdAt" ||
@@ -88,14 +88,14 @@ function TodosPage() {
             type: TODO_ACTIONS.FETCH_ERROR,
             payload: {
               error: "",
-              filterError: `Error filtering/sorting todos: ${error.message}`,
+              filterError: 'Unable to load your todos. Please try again.',
             },
           });
         } else {
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
             payload: {
-              error: `Error fetching todos: ${error.message}`,
+              error: 'Unable to load your todos. Please try again.',
               filterError: "",
             },
           });
@@ -117,7 +117,7 @@ function TodosPage() {
 
     const previousTodoList = todoList;
 
-    //optimistically add todo
+    //Add the todo to the UI immediately while the API request is processing.
     dispatch({
       type: TODO_ACTIONS.ADD_TODO_START,
       payload: {
@@ -153,12 +153,12 @@ function TodosPage() {
           newTodo: newTodo,
         },
       });
-    } catch (error) {
+    } catch {
       dispatch({
         type: TODO_ACTIONS.ADD_TODO_ERROR,
         payload: {
           previousTodoList: previousTodoList,
-          error: error.message,
+          error: "Unable to add your todo. Please try again later",
         },
       });
     }
@@ -194,12 +194,12 @@ function TodosPage() {
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS,
       });
-    } catch (error) {
+    } catch {
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_ERROR,
         payload: {
           previousTodoList: previousTodoList,
-          error: error.message,
+          error: "Unable to complete your todo. Please try again.",
         },
       });
     }
@@ -237,12 +237,12 @@ function TodosPage() {
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_SUCCESS,
       });
-    } catch (error) {
+    } catch {
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
         payload: {
           previousTodoList: previousTodoList,
-          error: error.message,
+          error: "Unable to update your todo. Please try again.",
         },
       });
     }

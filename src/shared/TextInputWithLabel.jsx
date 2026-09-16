@@ -14,6 +14,7 @@ function TextInputWithLabel({
             ref={inputRef}
             value={value}
             onChange={onChange} 
+            maxLength={50}
             />
         </>
     )
