@@ -1,6 +1,7 @@
 # 📝 React Todo App
 
-A modern Todo web application built with **React** and **Vite**.
+A responsive Todo management application that allows users to securely log in, create, edit, complete, search, sort, and filter their tasks while viewing personal Todo statistics.
+
 
 ## ✨ Features
 
