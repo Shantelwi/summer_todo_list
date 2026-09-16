@@ -27,10 +27,6 @@ A modern Todo web application built with **React** and **Vite**.
 - REST API
 - Git & GitHub
 
-## 🌐 Live Demo
-
-Coming soon — the application will be deployed after the project is completed.
-
 ## 📸 Screenshots
 
 ### Desktop View
@@ -43,6 +39,8 @@ Screenshot of the Todo application on a desktop screen.
 ![Desktop View](./public/desktop-4.png)
 ![Desktop View](./public/desktop-5.png)
 
+[Live Demo](https://summer-todo-list-hrihfdymg-shantelwis-projects.vercel.app)
+
 ---
 
 ## 🚀 Getting Started
@@ -51,7 +49,6 @@ Screenshot of the Todo application on a desktop screen.
 
 ```bash
 git clone https://github.com/Shantelwi/summer_todo_list
-cd summer_todo_list
 ```
 
 ### Install dependencies
@@ -85,7 +82,7 @@ Previews the production build locally.
 Open:
 
 ```bash
-http://localhost:3001
+http://localhost:5173
 ```
 
 ## 🎨 Design Decisions
@@ -98,6 +95,24 @@ http://localhost:3001
 - **Responsive CSS** allows the application to work on both desktop and mobile screens.
 - **Client-side validation** helps prevent empty Todo titles and limits the length of user input.
 
-## GitHub Profile Link
+### Styling Approach
 
-https://github.com/Shantelwi
+The application uses plain CSS with a shared global stylesheet. I chose this approach to keep the styling simple and easy to maintain while learning React.
+
+The styling is applied consistently across the application, including the navigation, forms, Todo list, buttons, error messages, and pages. Responsive CSS and media queries are used to make the application work on both desktop and mobile screen sizes.
+
+## 🔮 Future Improvements
+
+- Add due dates and reminders for Todos.
+- Add Todo categories.
+- Add pagination for larger Todo lists.
+- Add more automated tests.
+- Continue improving accessibility and keyboard navigation.
+
+## 📬 Contact
+
+GitHub: [Shantelwi](https://github.com/Shantelwi)
+
+## 📄 License
+
+This project was created for educational and portfolio purposes.

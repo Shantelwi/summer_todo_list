@@ -76,7 +76,7 @@ function ProfilePage() {
             {loading ? (
                 <p>Loading statistics...</p>
             ) : error ? (
-                <p>{error}</p>
+                <p className="error-message">{error}</p>
             ) : (
                 <div className="results">
 

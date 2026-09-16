@@ -134,6 +134,22 @@ label {
     font-weight: 500;
 }
 
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    padding: 0;
+}
+
+.nav-link {
+    text-decoration: none;
+}
+
+.nav-link.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .todo-controls{
     width: 100%;
     max-width: 700px;
