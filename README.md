@@ -27,6 +27,10 @@ A modern Todo web application built with **React** and **Vite**.
 - REST API
 - Git & GitHub
 
+## 🌐 Live Demo
+
+summer-todo-list-euof80td5-shantelwis-projects.vercel.app
+
 ## 📸 Screenshots
 
 ### Desktop View
