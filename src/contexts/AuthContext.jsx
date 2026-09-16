@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
             } else {
                 return {
                     success: false,
-                    error: `Authentication failed: ${data?.message}`
+                    error: 'Unable to log in. Please check your email and password and try again.'
                 };
             }
         } catch {

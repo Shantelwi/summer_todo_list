@@ -53,7 +53,7 @@ function TodosPage() {
           limit: 100,
         };
         if (debouncedFilterTerm) {
-          paramsObject.find = debouncedFilterTerm;
+          paramsObject.find = debouncedFilterTerm.trim();
         }
 
         const params = new URLSearchParams(paramsObject);
@@ -117,7 +117,6 @@ function TodosPage() {
 
     const previousTodoList = todoList;
 
-    //Add the todo to the UI immediately while the API request is processing.
     dispatch({
       type: TODO_ACTIONS.ADD_TODO_START,
       payload: {
