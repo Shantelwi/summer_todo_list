@@ -102,4 +102,4 @@ GitHub: [Shantelwi](https://github.com/Shantelwi)
 
 ## 📄 License
 
-This project was created for educational and portfolio purposes.
+This project is provided for educational and portfolio purposes. The source code is available for learning and demonstration purposes.
